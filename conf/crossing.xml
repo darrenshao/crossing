@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crossing>
+	<!-- Providers  -->
+	<providertypes>
+		<type name="LocalCall" enabled="true"  class="com.shc.crossing.bservice.provider.LocalCallProvider"></type>
+		<type name="SharpRpc" enabled="true"  class="com.shc.crossing.bservice.provider.SharpRpcProvider"></type>
+		<type name="ThriftRpc" enabled="true"  class="com.shc.crossing.bservice.provider.ThriftRpcProvider"></type>
+		<type name="more other provider type added here" enabled="no"  class=""></type>
+	</providertypes>
+	
+	<!-- Servers -->
+	<servers>
+		<server name="LocalRpcServer" type="LocalCall"></server>
+		<server name="SharpDemoServer" type="SharpRpc"></server>
+		<server name="SharpEchoServer" type="SharpRpc"></server>
+		<server name="SharpHelloServer" type="SharpRpc"></server>
+		<server name="ThriftDemoServer" type="ThriftRpc"></server>
+	</servers>
+	
+	<!-- Interfaces -->
+	<interfaces>
+		<server name="LocalRpcServer">
+			<interface name="com.shc.crossing.example.ServiceDemoCall@doCopyMe" isEncrypt="false"></interface>
+			<interface name="com.shc.crossing.example.ServiceDemoCall@getSimpleReply" isEncrypt="false"></interface>
+		</server>
+		<server name="SharpDemoServer">
+			<interface name="com.howvan.server.data.action.ServiceDemoCall@doCopyMe" isEncrypt="false"></interface>
+			<interface name="com.howvan.server.data.action.ServiceDemoCall@getSimpleReply" isEncrypt="false"></interface>
+		</server>
+		<server name="SharpEchoServer">
+			<interface name="com.ftxgame.sharp.example.EchoAction@echo" isEncrypt="false"></interface>
+			<interface name="com.ftxgame.sharp.example.EchoAction@sum" isEncrypt="false"></interface>
+			<interface name="com.ftxgame.sharp.example.EchoAction@minus" isEncrypt="false"></interface>
+		</server>
+		<server name="SharpHelloServer">
+			<interface name="com.ftxgame.sharp.example.HelloAction@hello" isEncrypt="false"></interface>
+			<interface name="com.ftxgame.sharp.example.HelloAction@goodMorning" isEncrypt="false"></interface>
+		</server>
+		<server name="ThriftDemoServer">
+			<interface name="io.thrift.example.Order@queryUserOrder" isEncrypt="true"></interface>
+		</server>
+	</interfaces>
+
+</crossing>

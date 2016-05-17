@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acl enabled="true">
+	<!-- ACL Rules -->
+	<rules>
+		<rule name="ipaddress" enabled="true">rule for IP address access check</rule>
+		<rule name="interface" enabled="true">rule for interface access check</rule>
+	</rules>
+	
+	<!-- Granted Client based on IP -->
+	<grantedclient>
+		<client name="127.0.0.1" ip="127.0.0.1" enabled="true" desc="democlient"></client>
+	</grantedclient>
+	
+	<!-- Granted interface to the given client -->
+	<grantedif>
+		<client name="127.0.0.1">
+			<interface value="com.shc.crossing.example.ServiceDemoCall@getSimpleReply"></interface>
+			<interface value="com.shc.crossing.example.ServiceDemoCall@doCopyMe"></interface>
+			<interface value="com.ftxgame.sharp.example.EchoAction@echo"></interface>
+			<interface value="com.ftxgame.sharp.example.EchoAction@sum"></interface>
+			<interface value="com.ftxgame.sharp.example.EchoAction@minus"></interface>
+			<interface value="com.howvan.server.data.action.ServiceDemoCall@doCopyMe"></interface>
+			<interface value="com.howvan.server.data.action.ServiceDemoCall@getSimpleReply"></interface>
+		</client>
+
+	</grantedif>
+	
+</acl>

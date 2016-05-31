@@ -86,7 +86,7 @@ public class LocalCallProvider extends Provider {
 			mm = cl.getDeclaredMethod(am[si].getName(), am[si].getParameterTypes());
 			jsonResult = mm.invoke(execObj, jsonParams, encrypt);
 
-			MyLog.logger.info("Invoked LocalCall call: " + server + " ==> " + clazz + " " + inf);
+			MyLog.logger.info("Invoked LocalCall call: " + server + " ==> " + clazz + " ==> " + inf);
 		}catch(Exception e){
 			MyLog.printStackTrace(e);
 			throw new CrossException(ErrorCode.CROSSING_ERR_INTERNAL.getCode(),

@@ -135,25 +135,25 @@ public class CrossingCall implements ICall {
 		return dep;
 	}
 	
-	public String doSyncCall(String server, String inf, String params) throws CrossException{
+	public String doSyncCall(String inf, String params) throws CrossException{
 		String signedp = getSignedParams(params);
-		MyLog.logger.info("Invoked call: " + server + " --> " + inf);
-		String response = syncCall(server, inf, signedp, false);
+		MyLog.logger.info("Invoked call: " + inf);
+		String response = syncCall(inf, signedp, false);
 		
 		//
 		String nosign = checkSignAndRemove(response);
 		return nosign;
 	}
 	
-	public String doSyncCall(String server, String inf, String params, boolean isEncrypt) throws CrossException{
+	public String doSyncCall(String inf, String params, boolean isEncrypt) throws CrossException{
 		if (!isEncrypt){
-			return doSyncCall(server, inf, params);
+			return doSyncCall(inf, params);
 		}
 		
 		String signedp = getSignedParams(params);
 		String encryptedp = getEncryptedParams(signedp);
-		MyLog.logger.info("Invoked call(*): " + server + " --> " + inf);
-		String response = syncCall(server, inf, encryptedp, isEncrypt);
+		MyLog.logger.info("Invoked call(*): " + inf);
+		String response = syncCall(inf, encryptedp, isEncrypt);
 		
 		//
 		String decryptedres = getDecryptedParams(response);
@@ -164,9 +164,9 @@ public class CrossingCall implements ICall {
 		
 
 	/* (non-Javadoc)
-	 * @see com.shc.crossing.call.ICall#syncCall(java.lang.String, java.lang.String, java.lang.String, boolean)
+	 * @see com.shc.crossing.call.ICall#syncCall(java.lang.String, java.lang.String, boolean)
 	 */
-	public String syncCall(String server, String inf, String params, boolean isEncrypt) throws CrossException{
+	public String syncCall(String inf, String params, boolean isEncrypt) throws CrossException{
 		//Starting client call
 		Channel channel = cfuture.channel();
 		CrossingReqProto.CrossingReq.Builder builder = CrossingReqProto.CrossingReq.newBuilder();
@@ -175,7 +175,6 @@ public class CrossingCall implements ICall {
 		String ip = isa.getAddress().getHostAddress();
 	
 		builder.setSeqId(Utils.getSeqId(ip));
-		builder.setServiceName(server);
 		builder.setInterfaceName(inf);
 		builder.setParams(params);
 		builder.setIsEncrypt(isEncrypt);

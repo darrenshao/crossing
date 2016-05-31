@@ -80,7 +80,7 @@ public class SharpRpcProvider extends Provider {
 			mm = action.getClass().getDeclaredMethod(am[si].getName(), am[si].getParameterTypes());
 			jsonResult = mm.invoke(action, jsonParams, encrypt);
 			
-			MyLog.logger.info("Invoked SharpRpc call: " + server + " ==> " + clazz + " " + inf);
+			MyLog.logger.info("Invoked SharpRpc call: " + server + " ==> " + clazz + " ==> " + inf);
 			
 		}catch(Exception e){
 			MyLog.printStackTrace(e);

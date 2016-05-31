@@ -32,20 +32,37 @@ import com.shc.crossing.log.MyLog;
  */
 public class CrossingConfig extends Config {
 	private HashMap<String,ProviderPair> ptypesMap;
-	private HashMap<String,String> serversMap;
+	private HashMap<String,ServerPair> serversMap;
 	private HashMap<String,ArrayList<InfPair>> infsMap;
 	
 	public CrossingConfig(String filePath) {
 		super("CrossingConfig", filePath);
 		init();
 	}
-
+	
 	public String getServerType(String server){
-		return serversMap.get(server);
+		ServerPair sp = serversMap.get(server);
+		if (sp!=null){
+			return sp.getType();
+		}
+		return null;
 	}
 	
 	public ProviderPair getProvider(String type){
 		return ptypesMap.get(type);
+	}
+	
+	public ArrayList<ServerPair> getServers(String type){
+		ArrayList<ServerPair> al = new ArrayList<ServerPair>();
+		Iterator<Entry<String,ServerPair>> it = serversMap.entrySet().iterator();
+		Entry<String,ServerPair> en;
+		while(it.hasNext()){
+			en = it.next();
+			if ((type!=null) && type.equals(en.getValue().getType())){
+				al.add(en.getValue());
+			}
+		}
+		return al;		
 	}
 	
 	public ArrayList<ProviderPair> getProviders(){
@@ -68,7 +85,7 @@ public class CrossingConfig extends Config {
 			ptypesMap = new HashMap<String, ProviderPair>();
 		}
 		if (serversMap==null){
-			serversMap = new HashMap<String, String>();
+			serversMap = new HashMap<String, ServerPair>();
 		}
 		if (infsMap==null){
 			infsMap = new HashMap<String, ArrayList<InfPair>>();
@@ -108,13 +125,20 @@ public class CrossingConfig extends Config {
 		List<ConfigurationNode> srvsnode = root.getChildren("servers");
 		List<ConfigurationNode> srvnode = srvsnode.get(0).getChildren();
 		//ConfigurationNode node;
-		List<ConfigurationNode> type;
+		List<ConfigurationNode> type, iplist, port;
 		for(int i=0;i<srvnode.size();i++){
 			node = srvnode.get(i);
 			name = node.getAttributes("name");
 			type = node.getAttributes("type");
+			iplist = node.getAttributes("ip");
+			port = node.getAttributes("port");
 
-			serversMap.put(name.get(0).getValue().toString(), type.get(0).getValue().toString());
+			serversMap.put(name.get(0).getValue().toString(), new ServerPair(
+					name.get(0).getValue().toString(),
+					type.get(0).getValue().toString(),
+					iplist.get(0).getValue().toString(),
+					Integer.parseInt(port.get(0).getValue().toString())
+					));
 		}	
 		
 		
@@ -161,11 +185,12 @@ public class CrossingConfig extends Config {
 		}
 		
 		sb.append("Servers:\n");
-		Iterator<Entry<String, String>> sit = serversMap.entrySet().iterator();
-		Entry<String,String> sen;
+		Iterator<Entry<String, ServerPair>> sit = serversMap.entrySet().iterator();
+		Entry<String,ServerPair> sen;
 		while(sit.hasNext()){
 			sen = sit.next();
-			sb.append(String.format("%-40s= %s\n", sen.getKey(), sen.getValue()));
+			sb.append(String.format("%-20s(%-16s/%d) = %s\n", sen.getKey(), 
+					sen.getValue().getIplist(), sen.getValue().getPort(), sen.getValue().getType()));
 		}
 		
 		sb.append("Interfaces:\n");

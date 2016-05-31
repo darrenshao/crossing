@@ -72,7 +72,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	    	
 	    	ReqMsg rm = new ReqMsg();
 	    	rm.seqId = req.getSeqId();
-	    	rm.server = req.getServiceName();
 	    	rm.inf = req.getInterfaceName();
 	    	rm.params = req.getParams();
 	    	rm.isEncrypt = req.getIsEncrypt();
@@ -89,14 +88,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 				return;
 	    	}
 			if (!aw.isInterfaceAccessible(clientIp, rm.inf)){
-				MyLog.logger.error("Call unauthorized: " + clientIp + " --> (" + rm.server + ")" + rm.inf);
+				MyLog.logger.error("Call unauthorized: " + clientIp + " --> " + rm.inf);
 				resp = createResp(req,ParamBuilder.
 						createErrorParams(ErrorCode.CROSSING_ERR_UNAUTHORIZED_INF.getCode(), 
 								ErrorCode.CROSSING_ERR_UNAUTHORIZED_INF.getInfo()));
 				ctx.writeAndFlush(resp);
 				return;
 			}
-			//MyLog.logger.info("Call authorized: " + clientIp + " --> (" + server + ")" + inf);
+			//MyLog.logger.info("Call authorized: " + clientIp + " --> " + inf);
 	    	rm.ip = clientIp;
 			
 	    	//do Service Call
@@ -116,10 +115,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	        ccs.incCounterPair(rm.inf);
 	        if (ParamBuilder.getErrorCode(resParams)==0){
 	        	ccs.setSuccesses(ccs.getSuccesses()+1);
-	        	MyLog.logger.info("Call succeeded: " + clientIp + " --> [" + rm.server + "]" + rm.inf + "(" + resParams + ")");
+	        	MyLog.logger.info("Call succeeded: " + clientIp + " --> " + rm.inf + "(" + resParams + ")");
 	        } else {
 	        	ccs.setFailures(ccs.getFailures()+1);
-	        	MyLog.logger.info("Call failed: " + clientIp + " --> [" + rm.server + "]" + rm.inf + "(" + resParams + ")");
+	        	MyLog.logger.info("Call failed: " + clientIp + " --> " + rm.inf + "(" + resParams + ")");
 	        }
 	        
 		}catch(Exception e){
@@ -139,7 +138,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public CrossingRespProto.CrossingResp createResp(CrossingReqProto.CrossingReq msg, String resParams){
     	CrossingRespProto.CrossingResp.Builder builder = CrossingRespProto.CrossingResp.newBuilder();
     	builder.setSeqId(msg.getSeqId());
-    	builder.setServiceName(msg.getServiceName());
     	builder.setInterfaceName(msg.getInterfaceName());
     	builder.setParams(resParams);
     	return builder.build();

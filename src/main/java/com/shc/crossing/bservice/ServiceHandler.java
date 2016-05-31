@@ -32,20 +32,25 @@ import com.shc.crossing.specs.ReqMsg;
 public class ServiceHandler implements IHandler{
 
 	public String handle(ReqMsg rmsg) throws CrossException {
+		//parse rmsg.inf with format: xxx@yyy@zzz
+		int pos1 = rmsg.inf.indexOf("@");
+		String servername = rmsg.inf.substring(0, pos1);
+		String remainder = rmsg.inf.substring(pos1+1);
+		
+		int pos2 = remainder.indexOf("@");
+		String classname = remainder.substring(0, pos2);
+		
+		String infname = remainder.substring(pos2+1);
 				
 		CrossingConfig cc = (CrossingConfig)ConfigWizard.getConfig(Constants.CONFIG_CROSSING);
-		String ptype = cc.getServerType(rmsg.server);
+		String ptype = cc.getServerType(servername);
 		ProviderPair provider = cc.getProvider(ptype);
 		//String infclass = provider.getClazz();
 		
-		int pos = rmsg.inf.indexOf("@");
-		String classname = rmsg.inf.substring(0, pos);
-		String infname = rmsg.inf.substring(pos+1);
-		
 		String ret = null;
 		Provider pro = ProviderWizard.getProvider(provider.getName());
-		ret = pro.execute(rmsg.server, classname, infname, rmsg.params, rmsg.isEncrypt);
-		MyLog.logger.info("Call executed: " + rmsg.server + " ==> " + classname + " " + infname);
+		ret = pro.execute(servername, classname, infname, rmsg.params, rmsg.isEncrypt);
+		MyLog.logger.info("Call executed: " + servername + " ==> " + classname + " ==> " + infname);
 		
 		return ret;
 	}

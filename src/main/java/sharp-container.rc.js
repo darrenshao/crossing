@@ -37,7 +37,7 @@ $.setLogFile("./log/example.log");
 
 var serverList=[
 {cluster:"SharpDemoServer",name:"app1",host:"127.0.0.1",port:9901},
-{cluster:"SharpHelloServer",name:"app1",host:"127.0.0.1",port:9901},
+//{cluster:"SharpHelloServer",name:"app1",host:"127.0.0.1",port:9901},
 ];
 for(i=0;i<serverList.length;i++){
        server=serverList[i];

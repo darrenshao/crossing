@@ -28,10 +28,10 @@ public class ServiceDemoCallImpl extends CrossingService implements ServiceDemoC
 	
 	public ServiceDemoCallImpl(){
 		setSignType("");
-		setSignKey("xxxServer@Howvan.comSignkey");
+		setSignKey("miftyExampleKey");
 		setEncryptType("");
-		setEnKey("xxxServer@Howvan.comSignkey");
-		setDeKey("xxxServer@Howvan.comSignkey");
+		setEnKey("miftyExampleKey");
+		setDeKey("miftyExampleKey");
 	}
 
 	/**

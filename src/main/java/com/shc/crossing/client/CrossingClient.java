@@ -161,11 +161,11 @@ public class CrossingClient{
 		MyLog.logger.info("Crossing Client stopped.");
 	}
 	
-	public String call(String server, String inf, String params) throws CrossException{
-		return ccall.doSyncCall(server, inf, params);
+	public String call(String inf, String params) throws CrossException{
+		return ccall.doSyncCall(inf, params);
 	}
 	
-	public String call(String server, String inf, String params, boolean isEncrypt) throws CrossException{
-		return ccall.doSyncCall(server, inf, params, isEncrypt);
+	public String call(String inf, String params, boolean isEncrypt) throws CrossException{
+		return ccall.doSyncCall(inf, params, isEncrypt);
 	}
 }

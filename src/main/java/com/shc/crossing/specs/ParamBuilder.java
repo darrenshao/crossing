@@ -150,7 +150,7 @@ public class ParamBuilder {
 //			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 //					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 //		}
-		String np = null;
+		String np = p;
 		if (jo.has("sign") || jo.has("params")){
 			String sign = jo.getAsJsonPrimitive("sign").getAsString();
 			np = jo.getAsJsonObject("params").toString();

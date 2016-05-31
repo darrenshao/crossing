@@ -18,7 +18,7 @@ importPackage(com.ftxgame.sharp.rpcserver);
 //------------------------------------------------------------------------------
 $.setLogLevel("INFO");
 //$.enableColorOutput();
-$.setLogFile("./log/example.log");
+$.setLogFile("logs/newsharp.log");
 //
 //app servers
 //------------------------------------------------------------------------------

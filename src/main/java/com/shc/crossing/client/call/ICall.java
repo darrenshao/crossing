@@ -24,7 +24,6 @@ import com.shc.crossing.exception.CrossException;
 public interface ICall {
 	/**
 	 * 
-	 * @param server Server
 	 * @param inf	Service interface within the class
 	 * @param params Input parameters with JSON format, <br/>
 	 * 				Example: <br/>
@@ -43,5 +42,5 @@ public interface ICall {
 	 * 				Non-encrypted: {"sign":"signValue","errorCode":"0","erroDesc":"success","params":{"key1":"value1","key2":"value2"}} <br/>
 	 * @throws CrossException 
 	 */
-	public String syncCall(String server, String inf, String params, boolean isEncrypt) throws CrossException;
+	public String syncCall(String inf, String params, boolean isEncrypt) throws CrossException;
 }

@@ -22,43 +22,29 @@ public final class CrossingRespProto {
     long getSeqId();
 
     /**
-     * <code>required string serviceName = 2;</code>
-     */
-    boolean hasServiceName();
-    /**
-     * <code>required string serviceName = 2;</code>
-     */
-    java.lang.String getServiceName();
-    /**
-     * <code>required string serviceName = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getServiceNameBytes();
-
-    /**
-     * <code>required string interfaceName = 3;</code>
+     * <code>required string interfaceName = 2;</code>
      */
     boolean hasInterfaceName();
     /**
-     * <code>required string interfaceName = 3;</code>
+     * <code>required string interfaceName = 2;</code>
      */
     java.lang.String getInterfaceName();
     /**
-     * <code>required string interfaceName = 3;</code>
+     * <code>required string interfaceName = 2;</code>
      */
     com.google.protobuf.ByteString
         getInterfaceNameBytes();
 
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     boolean hasParams();
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     java.lang.String getParams();
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     com.google.protobuf.ByteString
         getParamsBytes();
@@ -123,18 +109,12 @@ public final class CrossingRespProto {
             case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              serviceName_ = bs;
+              interfaceName_ = bs;
               break;
             }
             case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              interfaceName_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
               params_ = bs;
               break;
             }
@@ -193,58 +173,16 @@ public final class CrossingRespProto {
       return seqId_;
     }
 
-    public static final int SERVICENAME_FIELD_NUMBER = 2;
-    private java.lang.Object serviceName_;
+    public static final int INTERFACENAME_FIELD_NUMBER = 2;
+    private java.lang.Object interfaceName_;
     /**
-     * <code>required string serviceName = 2;</code>
+     * <code>required string interfaceName = 2;</code>
      */
-    public boolean hasServiceName() {
+    public boolean hasInterfaceName() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string serviceName = 2;</code>
-     */
-    public java.lang.String getServiceName() {
-      java.lang.Object ref = serviceName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          serviceName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string serviceName = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getServiceNameBytes() {
-      java.lang.Object ref = serviceName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serviceName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INTERFACENAME_FIELD_NUMBER = 3;
-    private java.lang.Object interfaceName_;
-    /**
-     * <code>required string interfaceName = 3;</code>
-     */
-    public boolean hasInterfaceName() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required string interfaceName = 3;</code>
+     * <code>required string interfaceName = 2;</code>
      */
     public java.lang.String getInterfaceName() {
       java.lang.Object ref = interfaceName_;
@@ -261,7 +199,7 @@ public final class CrossingRespProto {
       }
     }
     /**
-     * <code>required string interfaceName = 3;</code>
+     * <code>required string interfaceName = 2;</code>
      */
     public com.google.protobuf.ByteString
         getInterfaceNameBytes() {
@@ -277,16 +215,16 @@ public final class CrossingRespProto {
       }
     }
 
-    public static final int PARAMS_FIELD_NUMBER = 4;
+    public static final int PARAMS_FIELD_NUMBER = 3;
     private java.lang.Object params_;
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     public boolean hasParams() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     public java.lang.String getParams() {
       java.lang.Object ref = params_;
@@ -303,7 +241,7 @@ public final class CrossingRespProto {
       }
     }
     /**
-     * <code>required string params = 4;</code>
+     * <code>required string params = 3;</code>
      */
     public com.google.protobuf.ByteString
         getParamsBytes() {
@@ -321,7 +259,6 @@ public final class CrossingRespProto {
 
     private void initFields() {
       seqId_ = 0L;
-      serviceName_ = "";
       interfaceName_ = "";
       params_ = "";
     }
@@ -332,10 +269,6 @@ public final class CrossingRespProto {
       if (isInitialized == 0) return false;
 
       if (!hasSeqId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasServiceName()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -358,13 +291,10 @@ public final class CrossingRespProto {
         output.writeInt64(1, seqId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getServiceNameBytes());
+        output.writeBytes(2, getInterfaceNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getInterfaceNameBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getParamsBytes());
+        output.writeBytes(3, getParamsBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -381,15 +311,11 @@ public final class CrossingRespProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getServiceNameBytes());
+          .computeBytesSize(2, getInterfaceNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getInterfaceNameBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getParamsBytes());
+          .computeBytesSize(3, getParamsBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -510,12 +436,10 @@ public final class CrossingRespProto {
         super.clear();
         seqId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        serviceName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         interfaceName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         params_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -551,13 +475,9 @@ public final class CrossingRespProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.serviceName_ = serviceName_;
+        result.interfaceName_ = interfaceName_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
-        }
-        result.interfaceName_ = interfaceName_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
         }
         result.params_ = params_;
         result.bitField0_ = to_bitField0_;
@@ -579,18 +499,13 @@ public final class CrossingRespProto {
         if (other.hasSeqId()) {
           setSeqId(other.getSeqId());
         }
-        if (other.hasServiceName()) {
-          bitField0_ |= 0x00000002;
-          serviceName_ = other.serviceName_;
-          onChanged();
-        }
         if (other.hasInterfaceName()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000002;
           interfaceName_ = other.interfaceName_;
           onChanged();
         }
         if (other.hasParams()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
           params_ = other.params_;
           onChanged();
         }
@@ -600,10 +515,6 @@ public final class CrossingRespProto {
 
       public final boolean isInitialized() {
         if (!hasSeqId()) {
-          
-          return false;
-        }
-        if (!hasServiceName()) {
           
           return false;
         }
@@ -669,91 +580,15 @@ public final class CrossingRespProto {
         return this;
       }
 
-      private java.lang.Object serviceName_ = "";
+      private java.lang.Object interfaceName_ = "";
       /**
-       * <code>required string serviceName = 2;</code>
+       * <code>required string interfaceName = 2;</code>
        */
-      public boolean hasServiceName() {
+      public boolean hasInterfaceName() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string serviceName = 2;</code>
-       */
-      public java.lang.String getServiceName() {
-        java.lang.Object ref = serviceName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string serviceName = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getServiceNameBytes() {
-        java.lang.Object ref = serviceName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serviceName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string serviceName = 2;</code>
-       */
-      public Builder setServiceName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        serviceName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceName = 2;</code>
-       */
-      public Builder clearServiceName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        serviceName_ = getDefaultInstance().getServiceName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string serviceName = 2;</code>
-       */
-      public Builder setServiceNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        serviceName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object interfaceName_ = "";
-      /**
-       * <code>required string interfaceName = 3;</code>
-       */
-      public boolean hasInterfaceName() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required string interfaceName = 3;</code>
+       * <code>required string interfaceName = 2;</code>
        */
       public java.lang.String getInterfaceName() {
         java.lang.Object ref = interfaceName_;
@@ -770,7 +605,7 @@ public final class CrossingRespProto {
         }
       }
       /**
-       * <code>required string interfaceName = 3;</code>
+       * <code>required string interfaceName = 2;</code>
        */
       public com.google.protobuf.ByteString
           getInterfaceNameBytes() {
@@ -786,36 +621,36 @@ public final class CrossingRespProto {
         }
       }
       /**
-       * <code>required string interfaceName = 3;</code>
+       * <code>required string interfaceName = 2;</code>
        */
       public Builder setInterfaceName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         interfaceName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string interfaceName = 3;</code>
+       * <code>required string interfaceName = 2;</code>
        */
       public Builder clearInterfaceName() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         interfaceName_ = getDefaultInstance().getInterfaceName();
         onChanged();
         return this;
       }
       /**
-       * <code>required string interfaceName = 3;</code>
+       * <code>required string interfaceName = 2;</code>
        */
       public Builder setInterfaceNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         interfaceName_ = value;
         onChanged();
         return this;
@@ -823,13 +658,13 @@ public final class CrossingRespProto {
 
       private java.lang.Object params_ = "";
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public boolean hasParams() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public java.lang.String getParams() {
         java.lang.Object ref = params_;
@@ -846,7 +681,7 @@ public final class CrossingRespProto {
         }
       }
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public com.google.protobuf.ByteString
           getParamsBytes() {
@@ -862,36 +697,36 @@ public final class CrossingRespProto {
         }
       }
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public Builder setParams(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
         params_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public Builder clearParams() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         params_ = getDefaultInstance().getParams();
         onChanged();
         return this;
       }
       /**
-       * <code>required string params = 4;</code>
+       * <code>required string params = 3;</code>
        */
       public Builder setParamsBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
         params_ = value;
         onChanged();
         return this;
@@ -922,11 +757,10 @@ public final class CrossingRespProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022CrossingResp.proto\022\010protobuf\"Y\n\014Crossi" +
-      "ngResp\022\r\n\005seqId\030\001 \002(\003\022\023\n\013serviceName\030\002 \002" +
-      "(\t\022\025\n\rinterfaceName\030\003 \002(\t\022\016\n\006params\030\004 \002(" +
-      "\tB.\n\031com.shc.crossing.protobufB\021Crossing" +
-      "RespProto"
+      "\n\022CrossingResp.proto\022\010protobuf\"D\n\014Crossi" +
+      "ngResp\022\r\n\005seqId\030\001 \002(\003\022\025\n\rinterfaceName\030\002" +
+      " \002(\t\022\016\n\006params\030\003 \002(\tB.\n\031com.shc.crossing" +
+      ".protobufB\021CrossingRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -945,7 +779,7 @@ public final class CrossingRespProto {
     internal_static_protobuf_CrossingResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_protobuf_CrossingResp_descriptor,
-        new java.lang.String[] { "SeqId", "ServiceName", "InterfaceName", "Params", });
+        new java.lang.String[] { "SeqId", "InterfaceName", "Params", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

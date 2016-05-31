@@ -4,7 +4,6 @@ option java_outer_classname="CrossingRespProto";
 
 message CrossingResp{
 	required int64 seqId = 1;
-	required string serviceName = 2;
-	required string interfaceName = 3;
-	required string params = 4;
+	required string interfaceName = 2;
+	required string params = 3;
 }

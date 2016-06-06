@@ -17,6 +17,10 @@ package com.shc.crossing.specs;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.shc.crossing.exception.CrossException;
@@ -140,17 +144,7 @@ public class ParamBuilder {
 		}		
 		
 		JsonObject jo = (JsonObject) jop;
-//		if (!jo.has("sign")){
-//			MyLog.logger.error("Sign not found.");
-//			throw new CrossException(ErrorCode.COMMON_ERR_SIGN_MISSING.getCode(),
-//					ErrorCode.COMMON_ERR_SIGN_MISSING.getInfo());
-//		}
-//		if (!jo.has("params")){
-//			MyLog.logger.error("Params not found.");
-//			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
-//					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
-//		}
-		String np = p;
+		String np = null;
 		if (jo.has("sign") || jo.has("params")){
 			String sign = jo.getAsJsonPrimitive("sign").getAsString();
 			np = jo.getAsJsonObject("params").toString();
@@ -160,9 +154,21 @@ public class ParamBuilder {
 				throw new CrossException(ErrorCode.COMMON_ERR_SIGN_BAD.getCode(),
 						ErrorCode.COMMON_ERR_SIGN_BAD.getInfo());
 			}
+			
+			//remove sign field only and return
+			Iterator<Entry<String,JsonElement>> it = jo.entrySet().iterator();
+			JsonObject rjo = new JsonObject();
+			Entry<String, JsonElement> en;
+			while(it.hasNext()){
+				en = it.next();
+				if (!en.getKey().equals("sign")){
+					rjo.add(en.getKey(), en.getValue());
+				}
+			}
+			return rjo.toString();
 		}
 		
-		return np;
+		return p;
 	}
 
 	//encrypted: {"encrypted":"xxxxxxxxxxxxxxxx","errorCode":"0","errorInfo":"Success"}

@@ -20,19 +20,31 @@ public class ServerPair {
 	private String type;
 	private String iplist;
 	private int port;
+	private String methodProxy;
 	
 	public ServerPair(){
 		
 	}
 	
-	public ServerPair(String name, String type, String iplist, int port) {
+	public ServerPair(String name, String type, String methodProxy, String iplist, int port) {
 		super();
 		this.name = name;
 		this.type = type;
+		this.methodProxy = methodProxy;
 		this.iplist = iplist;
 		this.port = port;
 	}
 	
+	
+	
+	public String getMethodProxy() {
+		return methodProxy;
+	}
+
+	public void setMethodProxy(String methodProxy) {
+		this.methodProxy = methodProxy;
+	}
+
 	public void setPort(int port){
 		this.port = port;
 	}

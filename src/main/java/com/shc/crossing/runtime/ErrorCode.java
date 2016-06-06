@@ -19,6 +19,32 @@ package com.shc.crossing.runtime;
  * @author shc
  *
  */
+class ECBuilder{
+	final public static int EC_MAIN_HEADER = 0x01;	//applied from Crossing Administrator
+	final public static int EC_SUB_HEADER = 0x00;	//applied from Crossing Administrator
+	public static int ERRORCODE(int ec){
+		int errcode = EC_MAIN_HEADER;
+		int subheader = EC_SUB_HEADER;
+		errcode = errcode << 24;
+		subheader = subheader << 16;
+		return (errcode | subheader | ec);
+	}
+	public static int ERRORCODE(int sub_header, int ec){
+		int errcode = EC_MAIN_HEADER;
+		int subheader = sub_header;
+		errcode = errcode << 24;
+		subheader = subheader << 16;
+		return (errcode | subheader | ec);
+	}
+	public static int ERRORCODE(int main_header, int sub_header, int ec){
+		int errcode = main_header;
+		int subheader = sub_header;
+		errcode = errcode << 24;
+		subheader = subheader << 16;
+		return (errcode | subheader | ec);
+	}	
+};
+
 public enum ErrorCode {
 	/**
 	 * All runtime error codes defined here,
@@ -27,45 +53,46 @@ public enum ErrorCode {
 	 * following 2 digits: used for service/module/subsystem 
 	 * last 4 digits: used for detailed errors
 	 */
-		//Success
-		SUCCESS(0x00000000,"Success"),
-	
-		//Crossing ErrorCode： 0x01 00 0000 - 0x01 FF FFFF
-		CROSSING_ERR_UNAUTHORIZED_IP(0x01000001,"Unauthorized client IP."),
-		CROSSING_ERR_UNAUTHORIZED_INF(0x01000002,"Attempt to access unauthorized interface."),
-		CROSSING_ERR_SERVER_NOT_FOUND(0x01000003,"Server not found."),
-		CROSSING_ERR_CLASS_NOT_FOUND(0x01000004,"Class not found."),
-		CROSSING_ERR_INTERFACE_NOT_FOUND(0x01000005,"Interface not found."),
-		CROSSING_ERR_CLIENT_STARTUP(0x1000008,"Client startup failed."),
-		
-		CROSSING_ERR_INTERNAL(0x0100ffff,"Server internal error."),
-		
-		//Common ErrorCodes： 0xFF 00 0000 - 0xFF FF FFFE
-		COMMON_ERR_PARAM_MALFORMED(0xff000011,"Parameter malformed."),
-		COMMON_ERR_PARAM_MISSING(0xff000012,"Parameter missed."),
-		
-		COMMON_ERR_SIGN_BAD(0xff000021,"Bad signature."),
-		COMMON_ERR_SIGN_MISSING(0xff000022,"Missing signature."),
-		
-		COMMON_ERR_ENCRYPTION(0x1000031,"Encryption error."),
-		COMMON_ERR_DECRYPTION(0x1000032,"Decryption error."),
-		
-		//Always Unkown
-		COMMON_ERR_UNKOWN(0xffffffff,"");
-		
-		private int code;
-		private String info;
-		
-		private ErrorCode(int code, String info){
-			this.code = code;
-			this.info = info;
-		}
+	//Success
+	SUCCESS(0x00000000,"Success"),
 
-		public int getCode() {
-			return code;
-		}
+	//Crossing ErrorCode： 0x01 00 0000 - 0x01 FF FFFF
+	CROSSING_ERR_UNAUTHORIZED_IP(ECBuilder.ERRORCODE(0x0001), "Unauthorized client IP."),
+	CROSSING_ERR_UNAUTHORIZED_INF(ECBuilder.ERRORCODE(0x0002), "Attempt to access unauthorized interface."),
+	CROSSING_ERR_SERVER_NOT_FOUND(ECBuilder.ERRORCODE(0x0003), "Server not found."),
+	CROSSING_ERR_CLASS_NOT_FOUND(ECBuilder.ERRORCODE(0x0004), "Class not found."),
+	CROSSING_ERR_INTERFACE_NOT_FOUND(ECBuilder.ERRORCODE(0x0005), "Interface not found."),
+	CROSSING_ERR_CLIENT_STARTUP(ECBuilder.ERRORCODE(0x0006), "Client startup failed."),
 
-		public String getInfo() {
-			return info;
-		}
+	CROSSING_ERR_INTERNAL(ECBuilder.ERRORCODE(0xffff), "Server internal error."),
+
+	//Common ErrorCodes： 0xFF 00 0000 - 0xFF FF FFFE
+	COMMON_ERR_PARAM_MALFORMED(ECBuilder.ERRORCODE(0xff, 0x00, 0x0011), "Parameter malformed."),
+	COMMON_ERR_PARAM_MISSING(ECBuilder.ERRORCODE(0xff, 0x00, 0x0012), "Parameter missed."),
+
+	COMMON_ERR_SIGN_BAD(ECBuilder.ERRORCODE(0xff, 0x00, 0x0021), "Bad signature."),
+	COMMON_ERR_SIGN_MISSING(ECBuilder.ERRORCODE(0xff, 0x00, 0x0022), "Missing signature."),
+
+	COMMON_ERR_ENCRYPTION(ECBuilder.ERRORCODE(0xff, 0x00, 0x0031), "Encryption error."),
+	COMMON_ERR_DECRYPTION(ECBuilder.ERRORCODE(0xff, 0x00, 0x0032), "Decryption error."),
+
+	//Always Unkown
+	COMMON_ERR_UNKOWN(0xffffffff, "Unkown error.");
+
+	//DO NOT CHANGE BELLOW.
+	private int code;
+	private String info;
+
+	private ErrorCode(int code, String info){
+		this.code = code;
+		this.info = info;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public String getInfo() {
+		return info;
+	}
 }

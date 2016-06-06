@@ -44,7 +44,10 @@ public class ThriftRpcProvider extends Provider {
 	//service - proxy pair
 	private HashMap<String, Object> proxyObjMap = new HashMap<String, Object>();
 	//server - IP pair
-	private HashMap<String, String> serverIpMap = new HashMap<String, String>();
+	//private HashMap<String, String> serverIpMap = new HashMap<String, String>();
+	//server - call proxy pair
+	private HashMap<String, String> callProxyMap = new HashMap<String, String>();
+	private String defaultCallProxy = "callProxy";
 	
 	public ThriftRpcProvider(boolean enabled,String clazz){
 		super("ThriftRpcProvider",enabled,clazz);
@@ -61,8 +64,12 @@ public class ThriftRpcProvider extends Provider {
 		Iterator<ServerPair> it = alsp.iterator();
 		ServerPair sp = null;
 		TTransport transport;
+		String cp = null;
 		while(it.hasNext()){
 			sp = it.next();
+			
+			cp = sp.getMethodProxy();
+			callProxyMap.put(sp.getName(), ((cp==null)||cp.isEmpty())?defaultCallProxy:cp);
 			
 			try{
 				transport = new TSocket(sp.getIplist(), sp.getPort());
@@ -112,13 +119,13 @@ public class ThriftRpcProvider extends Provider {
 			int si=0;
 			for (int i=0;i<am.length;i++){
 				//System.out.println(am[i]);
-				if (am[i].getName().equals(inf)){
+				if (am[i].getName().equals(callProxyMap.get(server))){
 					si = i;
 					break;
 				}
 			}
 			mm = cl.getDeclaredMethod(am[si].getName(), am[si].getParameterTypes());
-			jsonResult = mm.invoke(execObj, jsonParams, encrypt);
+			jsonResult = mm.invoke(execObj, inf, jsonParams, encrypt);
 
 			MyLog.logger.info("Invoked ThriftRpc call: " + server + " ==> " + clazz + " ==> " + inf);
 		}catch(Exception e){

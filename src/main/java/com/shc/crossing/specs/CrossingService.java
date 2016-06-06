@@ -215,7 +215,7 @@ public class CrossingService {
 	 * @return
 	 */
 	protected String buildOutputParams(JsonObject obj, boolean encrypt) throws CrossException{
-		if (obj==null){
+		if (obj==null || obj.toString().isEmpty() ){
 			//we do resume that it's successful without any response parameters.
 			JsonObject jo = new JsonObject();
 			jo.addProperty("errorCode", ErrorCode.SUCCESS.getCode());

@@ -28,14 +28,26 @@ public class CrossException extends Exception {
 	 */
 	private static final long serialVersionUID = 3492482886485598737L;
 
-	public CrossException(String string) {
-		super(string);
+	public CrossException(String message) {
+		super(message);
 	}
 
 	public CrossException(Exception e) {
 		super(e);
 	}
 
+	public CrossException() {
+		super();
+	}
+
+	public CrossException(Throwable cause) {
+		super(cause);
+	}
+
+	public CrossException(String message, Throwable cause) {
+		super(message, cause);
+	}	
+	
 	public CrossException(int errorCode, String errorInfo){
 		super(errorInfo);
 		this.errorCode = errorCode;
@@ -49,7 +61,6 @@ public class CrossException extends Exception {
 	public String getErrorInfo(){
 		return errorInfo;
 	}
-	
 	
 	public String toString(){
 		return getMessage();

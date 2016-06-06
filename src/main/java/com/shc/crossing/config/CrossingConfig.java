@@ -125,17 +125,19 @@ public class CrossingConfig extends Config {
 		List<ConfigurationNode> srvsnode = root.getChildren("servers");
 		List<ConfigurationNode> srvnode = srvsnode.get(0).getChildren();
 		//ConfigurationNode node;
-		List<ConfigurationNode> type, iplist, port;
+		List<ConfigurationNode> type, iplist, port, mp;
 		for(int i=0;i<srvnode.size();i++){
 			node = srvnode.get(i);
 			name = node.getAttributes("name");
 			type = node.getAttributes("type");
+			mp = node.getAttributes("methodProxy");
 			iplist = node.getAttributes("ip");
 			port = node.getAttributes("port");
 
 			serversMap.put(name.get(0).getValue().toString(), new ServerPair(
 					name.get(0).getValue().toString(),
 					type.get(0).getValue().toString(),
+					mp.get(0).getValue().toString(),
 					iplist.get(0).getValue().toString(),
 					Integer.parseInt(port.get(0).getValue().toString())
 					));
@@ -189,8 +191,9 @@ public class CrossingConfig extends Config {
 		Entry<String,ServerPair> sen;
 		while(sit.hasNext()){
 			sen = sit.next();
-			sb.append(String.format("%-20s(%-16s/%d) = %s\n", sen.getKey(), 
-					sen.getValue().getIplist(), sen.getValue().getPort(), sen.getValue().getType()));
+			sb.append(String.format("%-20s(%-16s/%d) = %s(%s)\n", sen.getKey(), 
+					sen.getValue().getIplist(), sen.getValue().getPort(), 
+					sen.getValue().getType(), sen.getValue().getMethodProxy()));
 		}
 		
 		sb.append("Interfaces:\n");

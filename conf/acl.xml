@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acl enabled="true">
+	<!-- ACL Rules -->
+	<rules>
+		<rule name="ipaddress" enabled="true">rule for IP address access check</rule>
+		<rule name="interface" enabled="false">rule for interface access check</rule>
+	</rules>
+	
+	<!-- Granted Client based on IP -->
+	<grantedclient>
+		<client name="127.0.0.1" ip="127.0.0.1" enabled="true" desc="democlient"></client>
+	</grantedclient>
+	
+	<!-- Granted interface to the given client -->
+	<grantedif>
+		<client name="127.0.0.1">
+			<interface value="LocalRpcServer@club.jmint.crossing.example.ServiceDemoCall@getSimpleReply"></interface>
+			<interface value="LocalRpcServer@club.jmint.crossing.example.ServiceDemoCall@doCopyMe"></interface>
+			
+			<interface value="ThriftDemoServer@com.howvan.mifty.service.gen.UserService@echo"></interface>
+			<interface value="ThriftDemoServer@com.howvan.mifty.service.gen.UserService@sayHello"></interface>
+			
+			<interface value="SharpDemoServer@com.howvan.server.data.action.ServiceDemoCall@doCopyMe"></interface>
+			<interface value="SharpDemoServer@com.howvan.server.data.action.ServiceDemoCall@getSimpleReply"></interface>
+			
+			<interface value="TwohalfMiftyServer@com.twohalf.mifty.service.gen.UserService@passwordVerify"></interface>
+			<interface value="TwohalfMiftyServer@com.twohalf.mifty.service.gen.UserService@userAdd"></interface>
+		</client>
+
+	</grantedif>
+	
+</acl>

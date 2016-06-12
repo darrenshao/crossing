@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crossing>
+	<!-- Providers  -->
+	<providertypes>
+		<type name="LocalCall" enabled="true"  class="club.jmint.crossing.bservice.provider.LocalCallProvider">for internal use only</type>
+		<type name="SharpRpc" enabled="true"  class="club.jmint.crossing.bservice.provider.SharpRpcProvider"></type>
+		<type name="ThriftRpc" enabled="true"  class="club.jmint.crossing.bservice.provider.ThriftRpcProvider"></type>
+	</providertypes>
+	
+	<!-- Servers -->
+	<servers>
+		<server name="LocalRpcServer" type="LocalCall" methodProxy="" ip="127.0.0.1" port="9090"></server>
+		<server name="SharpDemoServer" type="SharpRpc" methodProxy="" ip="127.0.0.1" port="9901"></server>
+		<server name="ThriftDemoServer" type="ThriftRpc" methodProxy="" ip="127.0.0.1" port="9090"></server>
+		<server name="TwohalfMiftyServer" type="ThriftRpc" methodProxy="" ip="127.0.0.1" port="9001"></server>
+	</servers>
+	
+	<!-- Interfaces -->
+	<interfaces>
+		<server name="LocalRpcServer">
+			<interface name="club.jmint.crossing.example.ServiceDemoCall@doCopyMe" isEncrypt="false"></interface>
+			<interface name="club.jmint.crossing.example.ServiceDemoCall@getSimpleReply" isEncrypt="false"></interface>
+		</server>
+		
+		<server name="SharpDemoServer">
+			<interface name="com.howvan.server.data.action.ServiceDemoCall@doCopyMe" isEncrypt="false"></interface>
+			<interface name="com.howvan.server.data.action.ServiceDemoCall@getSimpleReply" isEncrypt="false"></interface>
+		</server>
+		
+		<server name="ThriftDemoServer">
+			<interface name="com.howvan.mifty.service.gen.UserService@echo" isEncrypt="true"></interface>
+			<interface name="com.howvan.mifty.service.gen.UserService@sayHello" isEncrypt="true"></interface>
+		</server>
+		
+		<server name="TwohalfMiftyServer">
+			<interface name="com.twohalf.mifty.service.gen.UserService@passwordVerify" isEncrypt="true"></interface>
+			<interface name="com.twohalf.mifty.service.gen.UserService@userAdd" isEncrypt="true"></interface>
+		</server>
+	</interfaces>
+
+</crossing>

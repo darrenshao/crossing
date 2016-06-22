@@ -24,7 +24,7 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.config.CrossingConfig;
@@ -39,13 +39,8 @@ import club.jmint.crossing.runtime.ErrorCode;
  *
  */
 public class ThriftRpcProvider extends Provider {
-	//IP - protocol pair
-	private HashMap<String, TProtocol> tpMap = new HashMap<String, TProtocol>();
-	//service - proxy pair
+	private HashMap<String, TransportClient> tpMap = new HashMap<String, TransportClient>();
 	private HashMap<String, Object> proxyObjMap = new HashMap<String, Object>();
-	//server - IP pair
-	//private HashMap<String, String> serverIpMap = new HashMap<String, String>();
-	//server - call proxy pair
 	private HashMap<String, String> callProxyMap = new HashMap<String, String>();
 	private String defaultCallProxy = "callProxy";
 	
@@ -53,6 +48,9 @@ public class ThriftRpcProvider extends Provider {
 		super("ThriftRpcProvider",enabled,clazz);
 	}
 
+	public HashMap<String, TransportClient> getTransportClients(){
+		return tpMap;
+	}
 	
 	@Override
 	public void init() throws CrossException {
@@ -63,7 +61,7 @@ public class ThriftRpcProvider extends Provider {
 		//Initialize thrift RPC transport connection
 		Iterator<ServerPair> it = alsp.iterator();
 		ServerPair sp = null;
-		TTransport transport;
+		TransportClient tc;
 		String cp = null;
 		while(it.hasNext()){
 			sp = it.next();
@@ -71,16 +69,23 @@ public class ThriftRpcProvider extends Provider {
 			cp = sp.getMethodProxy();
 			callProxyMap.put(sp.getName(), ((cp==null)||cp.isEmpty())?defaultCallProxy:cp);
 			
-			try{
-				transport = new TSocket(sp.getIplist(), sp.getPort());
-				TProtocol protocol = new TBinaryProtocol(transport);
-				transport.open();
-				tpMap.put(sp.getName(), protocol);
-				
-			}catch(Exception e){
+			tc = new TransportClient();
+			tc.transport = new TSocket(sp.getIplist(), sp.getPort());
+			tc.serverIp = sp.getIplist();
+			tc.serverPort = sp.getPort();
+			tc.serverName = sp.getName();
+			tc.protocol = new TBinaryProtocol(tc.transport);
+			tpMap.put(sp.getName(), tc);
+			
+			//establish connection to Thrift server
+			try {
+				tc.transport.open();
+			} catch (TTransportException e) {
 				MyLog.printStackTrace(e);
 				MyLog.logger.error(getName() + ": Failed to create transport to server " 
 						+ sp.getName() + " by "+ sp.getIplist() + ":" + sp.getPort());
+				//if failed, drop it to the list for reopen.
+				tc.isConnected = false;
 				continue;
 			}
 			MyLog.logger.info(getName() + ": Succeeded to create transport to server " 
@@ -109,7 +114,7 @@ public class ThriftRpcProvider extends Provider {
 			synchronized (proxyObjMap){
 				execObj = proxyObjMap.get(clazz);
 				if (execObj==null){
-					mp = new TMultiplexedProtocol(tpMap.get(server), clazz);
+					mp = new TMultiplexedProtocol(tpMap.get(server).protocol, clazz);
 					execObj = cl.getDeclaredConstructor(TProtocol.class).newInstance(mp);
 					proxyObjMap.put(clazz, execObj);
 				}
@@ -117,7 +122,7 @@ public class ThriftRpcProvider extends Provider {
 			
 			am = cl.getDeclaredMethods();
 			int si=0;
-			for (int i=0;i<am.length;i++){
+			for (int i=0;i<am.length;i++){	//should be optimized later.
 				//System.out.println(am[i]);
 				if (am[i].getName().equals(callProxyMap.get(server))){
 					si = i;

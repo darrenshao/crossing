@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 import club.jmint.crossing.acl.AclWizard;
 import club.jmint.crossing.bservice.provider.ProviderWizard;
+import club.jmint.crossing.bservice.worker.WorkerWizard;
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.stats.StatsWizard;
 
@@ -35,6 +36,8 @@ public class WizardManager {
 		alwizards.add(new AclWizard("AclWizard"));
 		alwizards.add(new StatsWizard("StatsWizard"));
 		alwizards.add(new ProviderWizard("ProviderWizard"));
+		alwizards.add(new WorkerWizard("WorkerWizard"));
+		
 		Iterator<Wizard> it = alwizards.iterator();
 		Wizard wiz;
 		while(it.hasNext()){
@@ -42,6 +45,26 @@ public class WizardManager {
 			wiz.init();
 		}
 	}
+	
+	public static void startupWizard(){
+		Iterator<Wizard> it = alwizards.iterator();
+		Wizard wiz;
+		while(it.hasNext()){
+			wiz = it.next();
+			wiz.startup();
+		}
+	}
+	
+	
+	public static void shutdownWizard(){
+		Iterator<Wizard> it = alwizards.iterator();
+		Wizard wiz;
+		while(it.hasNext()){
+			wiz = it.next();
+			wiz.shutdown();
+		}
+	}
+	
 	
 	public static Wizard getWizard(String wizardName){
 		Iterator<Wizard> it = alwizards.iterator();

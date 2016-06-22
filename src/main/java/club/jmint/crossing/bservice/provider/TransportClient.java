@@ -13,37 +13,18 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.startup;
+package club.jmint.crossing.bservice.provider;
 
-import club.jmint.crossing.server.CrossingServer;
-import club.jmint.crossing.wizard.WizardManager;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TTransport;
 
-/**
- * @author shc
- *
- */
-public class Bootstrap {
+public class TransportClient {
+	public TTransport transport = null;
+	public TProtocol protocol = null;
+	public boolean isConnected = false;
+	public int connectTryTimes = 0;
+	public int serverPort;
+	public String serverIp;
+	public String serverName;
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		//Get command line parameters and parse
-		CommandLine cl = new CommandLine(args);
-		cl.parse();
-		
-		//Do initialization
-		WizardManager.initWizard();
-		
-		//Startup all components
-		WizardManager.startupWizard();
-		
-		//Server statup
-		CrossingServer cs = new CrossingServer();
-		cs.start();
-		
-		//Shutdown all components
-		WizardManager.shutdownWizard();
-	}
-
 }

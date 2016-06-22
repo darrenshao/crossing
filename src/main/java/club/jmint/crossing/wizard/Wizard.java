@@ -33,16 +33,16 @@ public class Wizard implements IWizard {
 	}
 
 	public void init() {
-		MyLog.logger.debug("Initializing " + name + ".");
+		MyLog.logger.info("Initializing " + name + ".");
 	}
 
 	public void startup() {
-		// TODO Auto-generated method stub
+		MyLog.logger.info("Starting " + name + ".");
 		
 	}
 
 	public void shutdown() {
-		// TODO Auto-generated method stub
+		MyLog.logger.info("Shutdown " + name + ".");
 		
 	}
 

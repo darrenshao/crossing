@@ -4,7 +4,7 @@
 
   <groupId>club.jmint</groupId>
   <artifactId>crossing</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>crossing</name>
@@ -83,7 +83,7 @@
 					<encoding>UTF-8</encoding>
 					<compilerArguments>
                    		<extdirs>/Users/shc/Desktop/devspace/javaspace/crossing/lib/mifty/*.jar</extdirs>
-                   		<extdirs>/Users/shc/Desktop/devspace/javaspace/crossing/lib/newsharp/*.jar</extdirs>
+                   		
                  	</compilerArguments>
 				</configuration>
 			</plugin>

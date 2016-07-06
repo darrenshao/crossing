@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.bservice.provider;
 
-import club.jmint.crossing.exception.CrossException;
+import club.jmint.crossing.specs.CrossException;
 
 /**
  * @author shc

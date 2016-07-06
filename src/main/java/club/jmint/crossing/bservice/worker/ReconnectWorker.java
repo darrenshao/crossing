@@ -24,7 +24,7 @@ import org.apache.thrift.transport.TTransportException;
 import club.jmint.crossing.bservice.provider.ProviderWizard;
 import club.jmint.crossing.bservice.provider.ThriftRpcProvider;
 import club.jmint.crossing.bservice.provider.TransportClient;
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 public class ReconnectWorker extends Thread {
 	private HashMap<String, TransportClient> tcMap = null;
@@ -43,9 +43,9 @@ public class ReconnectWorker extends Thread {
 			
 			try {
 				sleep(timelap);
-				MyLog.logger.debug("ReconnectWorker tick.");
+				//MyLog.logger.debug("ReconnectWorker tick.");
 			} catch (InterruptedException e1) {
-				MyLog.printStackTrace(e1);
+				CrossLog.printStackTrace(e1);
 			}
 			
 			
@@ -54,20 +54,23 @@ public class ReconnectWorker extends Thread {
 			TransportClient tc = null;
 			while (it.hasNext()){
 				en = it.next();
-				
 				tc = en.getValue();
-				if(!tc.isConnected || !tc.transport.isOpen()){
+				
+				
+				
+				if(!tc.transport.isOpen()){
 					//reconnect to Thrift server
 					try {
 						tc.transport.open();
-						MyLog.logger.info(getName() + ": Succeed to re-create transport to server: " 
+	
+						CrossLog.logger.info(getName() + ": Succeed to re-create transport to server: " 
 								+ tc.serverName + " by "+ tc.serverIp + ":" + tc.serverPort);
-						tc.isConnected = true;
+						//tc.isConnected = true;
 					} catch (TTransportException e) {
-						MyLog.printStackTrace(e);
-						MyLog.logger.error(getName() + ": Failed to re-create transport to server: " 
+						CrossLog.printStackTrace(e);
+						CrossLog.logger.error(getName() + ": Failed to re-create transport to server: " 
 								+ tc.serverName + " by "+ tc.serverIp + ":" + tc.serverPort);
-						tc.isConnected = false;
+						//tc.isConnected = false;
 						tc.connectTryTimes++;
 						//continue;
 					}

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.utils;
+package club.jmint.crossing.specs;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -25,9 +25,8 @@ import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.ErrorCode;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -53,7 +52,7 @@ public class Security {
             }
             return new String(mdstr);
         } catch (Exception e) {
-        	MyLog.printStackTrace(e);
+        	CrossLog.printStackTrace(e);
             return null;
         }
 	}
@@ -91,7 +90,7 @@ public class Security {
 	        byte[] results = cipher.doFinal(data.getBytes("UTF-8"));
 	        ret = Base64.encodeBase64String(results);
     	}catch(Exception e){
-    		MyLog.printStackTrace(e);
+    		CrossLog.printStackTrace(e);
     		throw new CrossException(ErrorCode.COMMON_ERR_ENCRYPTION.getCode(),
     				ErrorCode.COMMON_ERR_ENCRYPTION.getInfo());
     	}
@@ -111,7 +110,7 @@ public class Security {
 	        
 	        ret = new String(cipher.doFinal(Base64.decodeBase64(data)));
     	}catch(Exception e){
-    		MyLog.printStackTrace(e);
+    		CrossLog.printStackTrace(e);
     		throw new CrossException(ErrorCode.COMMON_ERR_DECRYPTION.getCode(),
     				ErrorCode.COMMON_ERR_DECRYPTION.getInfo());
     	}

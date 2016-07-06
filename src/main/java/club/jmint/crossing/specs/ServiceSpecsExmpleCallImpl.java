@@ -17,9 +17,8 @@ package club.jmint.crossing.specs;
 
 import com.google.gson.JsonObject;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.specs.CrossingService;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -46,7 +45,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 	 */
 	public String getSimpleReply(String params, boolean encrypt) {
 		//parse parameters and verify signature
-		MyLog.logger.debug("getSimpleReply: " + params);
+		CrossLog.logger.debug("getSimpleReply: " + params);
 		JsonObject ip;
 		try{
 			ip = parseInputParams(params, encrypt);
@@ -68,7 +67,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 		System.out.println("say: " + say);
 		System.out.println("job: " + job);
 		System.out.println("skills: " + skills);
-		MyLog.logger.info("\nname: " + name + "\nsay: " + say + "\njob: " + job + "\nskills: " + skills);
+		CrossLog.logger.info("\nname: " + name + "\nsay: " + say + "\njob: " + job + "\nskills: " + skills);
 		//do more checks here
 		
 		
@@ -86,7 +85,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 		}catch(CrossException ce){
 			return buildOutputByCrossException(ce);
 		}
-		MyLog.logger.debug("getSimpleReply: " + output);
+		CrossLog.logger.debug("getSimpleReply: " + output);
 		return output;
 	}
 
@@ -101,7 +100,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 	 * 		corresponding plain text: "{"sign":"EEEESSSSFFFFJJJJYYYYZZZZAAAABBBB","errorCode":"0","errorInfo":"success","params":{"reply":"Yes, I am ready."}}"
 	 */
 	public String doCopyMe(String params, boolean encrypt) {
-		MyLog.logger.debug("doCopyMe: " + params);
+		CrossLog.logger.debug("doCopyMe: " + params);
 		//parse parameters and verify signature
 		JsonObject ip;
 		try{
@@ -124,7 +123,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 		System.out.println("s2: " + s2);
 		System.out.println("s3: " + s3);
 		
-		MyLog.logger.info("\ns1: " + s1 + "\ns2: " + s2 + "\ns3: " + s3);
+		CrossLog.logger.info("\ns1: " + s1 + "\ns2: " + s2 + "\ns3: " + s3);
 		//do more checks here
 		
 		
@@ -142,7 +141,7 @@ public class ServiceSpecsExmpleCallImpl extends CrossingService implements Servi
 		}catch(CrossException ce){
 			return buildOutputByCrossException(ce);
 		}
-		MyLog.logger.debug("doCopyMe: " + output);
+		CrossLog.logger.debug("doCopyMe: " + output);
 		return output;
 	}
 

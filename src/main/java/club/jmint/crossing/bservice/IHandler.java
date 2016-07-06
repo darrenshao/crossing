@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.bservice;
 
-import club.jmint.crossing.exception.CrossException;
+import club.jmint.crossing.specs.CrossException;
 import club.jmint.crossing.specs.ReqMsg;
 
 /**

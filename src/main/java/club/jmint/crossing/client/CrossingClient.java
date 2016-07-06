@@ -18,13 +18,17 @@ package club.jmint.crossing.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
 import club.jmint.crossing.client.call.CrossingCall;
-import club.jmint.crossing.config.ClientCallConfig;
-import club.jmint.crossing.config.ConfigWizard;
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.client.config.ClientCallInfo;
+import club.jmint.crossing.client.config.ClientConfig;
 import club.jmint.crossing.runtime.Constants;
 import club.jmint.crossing.runtime.ErrorCode;
+import club.jmint.crossing.specs.CrossException;
+import club.jmint.crossing.utils.CrossLog;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -42,8 +46,9 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
  *
  */
 public class CrossingClient{
+	private ClientConfig config = null;
 	private final static CrossingClient cc = new CrossingClient();
-	private ArrayList<String> ips = null;
+	private String ip = null;
 	private boolean isSSLEnabled = false;
 	private int port = Constants.SERVER_PORT;
 	private ChannelFuture cf = null;
@@ -52,36 +57,6 @@ public class CrossingClient{
 	private Bootstrap bs = null;
 	private CrossingCall ccall = null;
 	private ClientHandler chandler = null;
-	private HashMap<String, ClientCallInfo> ccimap = null;
-
-	public void setClientCallInfo(HashMap<String, ClientCallInfo> ccim){
-		this.ccimap = ccim;
-
-    	if (ccimap.get("DEFAULT")==null){//no configuration file or no item found.
-    		ccimap.put("DEFAULT", new ClientCallInfo("", "DEFAULT", "", "MD5", "miftyExampleKey", 
-    				"DES", "miftyExampleKey", "miftyExampleKey"));
-    	}
-	}
-	
-	public void addServerIp(String ip){
-		ips.add(ip);
-	}
-	
-	public void removeServerIp(String ip){
-		ips.remove(ip);
-	}
-	
-	public void setPort(int port){
-		this.port = port;
-	}
-	
-	public void enableSSL(){
-		this.isSSLEnabled = true;
-	}
-	
-	public void disableSSL(){
-		this.isSSLEnabled = false;
-	}
 		
 	public static CrossingClient getInstance(){
 		return cc;
@@ -92,24 +67,24 @@ public class CrossingClient{
 	}
 
 	public void init() {
-		if (ips==null){
-			ips = new ArrayList<String>();
-		}
+		//load configuration from file: crossing_client.xml
+		config = new ClientConfig("conf/crossing_client.xml");
+		ip = config.getCrossingServer().ip;
+		port = Integer.parseInt(config.getCrossingServer().port);
+
 		chandler = new ClientHandler();
 	}
 	
 	public void startup() throws CrossException{
-        // Configure SSL
         SslContext sslCtx = null;
         if (isSSLEnabled) {
         	try{
             sslCtx = SslContextBuilder.forClient()
                 .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
         	}catch(Exception e){
-        		MyLog.printStackTrace(e);
+        		CrossLog.printStackTrace(e);
         		throw new CrossException(ErrorCode.CROSSING_ERR_CLIENT_STARTUP.getCode(),
         				ErrorCode.CROSSING_ERR_CLIENT_STARTUP.getInfo());
-        		//System.exit(-1);;
         	}
         } else {
             sslCtx = null;
@@ -126,13 +101,13 @@ public class CrossingClient{
 
             
             // Start the client.
-            cf = bs.connect(ips.get(0), port).sync();
+            cf = bs.connect(ip, port).sync();
             channel = cf.channel();
             
             // Wait until the connection is closed.
             //f.channel().closeFuture().sync();
         }catch(Exception e){
-        	MyLog.printStackTrace(e);
+        	CrossLog.printStackTrace(e);
     		throw new CrossException(ErrorCode.CROSSING_ERR_CLIENT_STARTUP.getCode(),
     				ErrorCode.CROSSING_ERR_CLIENT_STARTUP.getInfo());
 
@@ -143,8 +118,8 @@ public class CrossingClient{
 		}
         
         
-        ccall = new CrossingCall(cf, chandler, ccimap);
-        MyLog.logger.info("Crossing Client started.");
+        ccall = new CrossingCall(cf, chandler, config);
+        CrossLog.logger.info("Crossing Client started.");
 	}
 
 	public void shutdown() {
@@ -155,7 +130,7 @@ public class CrossingClient{
 		if (group!=null){
 			group.shutdownGracefully();
 		}
-		MyLog.logger.info("Crossing Client stopped.");
+		CrossLog.logger.info("Crossing Client stopped.");
 	}
 	
 	public String call(String inf, String params) throws CrossException{
@@ -165,4 +140,44 @@ public class CrossingClient{
 	public String call(String inf, String params, boolean isEncrypt) throws CrossException{
 		return ccall.doSyncCall(inf, params, isEncrypt);
 	}
+	
+	public CallResult serviceCall(String inf, JsonObject params, boolean isEncrypt){
+    	String result = null;
+    	CallResult cr = new CallResult();
+    	try{
+    		if (isEncrypt){
+    			result = call(inf, params.toString(), true);
+    		}else{
+    			result = call(inf, params.toString());
+    		}
+    	}catch(CrossException e){
+    		CrossLog.printStackTrace(e);
+    		CrossLog.logger.error("service call failed.");
+    		return null;
+    	}    	
+    	
+		JsonParser jp = new JsonParser();
+		JsonObject jo;
+		try{
+			jo = (JsonObject)jp.parse(result);
+		}catch(JsonSyntaxException e){
+    		CrossLog.printStackTrace(e);
+    		CrossLog.logger.error("service call failed.");
+    		return null;
+		}
+		
+		cr.errorCode = jo.getAsJsonPrimitive("errorCode").getAsInt();
+		if (cr.errorCode==ErrorCode.SUCCESS.getCode()){
+			cr.isSuccess = true;
+		} else {
+			cr.isSuccess = false;
+		}
+		cr.errorInfo = jo.getAsJsonPrimitive("errorInfo").getAsString();
+		if (jo.has("params")){
+			cr.data = jo.getAsJsonObject("params");
+		}
+		
+		return cr;
+	}
+	
 }

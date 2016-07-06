@@ -17,8 +17,8 @@ package club.jmint.crossing.client;
 
 import java.util.HashMap;
 
-import club.jmint.crossing.log.MyLog;
-import club.jmint.crossing.protobuf.CrossingRespProto;
+import club.jmint.crossing.specs.protobuf.CrossingRespProto;
+import club.jmint.crossing.utils.CrossLog;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -49,7 +49,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
     	
     	CrossingRespProto.CrossingResp resp = (CrossingRespProto.CrossingResp) msg;
-    	MyLog.logger.debug("Received message:\n" + resp);
+    	CrossLog.logger.debug("Received message:\n" + resp);
     	addRespMsg(resp);
         //ctx.write(msg);
 	}
@@ -58,7 +58,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		super.channelActive(ctx);
-		MyLog.logger.debug("Connection established.");
+		CrossLog.logger.debug("Connection established.");
 	}
 
 	@Override

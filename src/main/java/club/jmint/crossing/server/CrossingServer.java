@@ -17,8 +17,8 @@ package club.jmint.crossing.server;
 
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.config.ServerConfig;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.Constants;
+import club.jmint.crossing.utils.CrossLog;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -65,7 +65,7 @@ public class CrossingServer{
 	            SelfSignedCertificate ssc = new SelfSignedCertificate();
 	            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
         	} catch(Exception e){
-        		MyLog.printStackTrace(e);
+        		CrossLog.printStackTrace(e);
         	}
         } else {
             sslCtx = null;
@@ -84,18 +84,18 @@ public class CrossingServer{
 
             // Start the server.
             ChannelFuture f = b.bind(port).sync();
-            MyLog.logger.info("Crossing Server started......");
+            CrossLog.logger.info("Crossing Server started......");
 
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
             
         } catch (InterruptedException e) {
-        	MyLog.printStackTrace(e);
+        	CrossLog.printStackTrace(e);
 		} finally {
             // Shut down all event loops to terminate all threads.
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
-            MyLog.logger.info("Crossing Server shutdown......");
+            CrossLog.logger.info("Crossing Server shutdown......");
         }
 	}
 

@@ -36,15 +36,13 @@ public class Constants {
 	public final static String CONFIG_ACL = "config.acl";
 	public final static String CONFIG_SERVER = "config.server";
 	public final static String CONFIG_CROSSING = "config.crossing";
-	public final static String CONFIG_CLIENTCALL = "config.clientcall";
 	
 	public final static String SERVER_TYPE_LOCALRPC = "LocalCall";
-	public final static String SERVER_TYPE_SHARPRPC = "SharpRpc";
 	public final static String SERVER_TYPE_THRIFTRPC = "ThriftRpc";
 	
 	public final static int SERVER_PORT = 9000;
 	
-	public final static int SERVICE_CALL_TYPE_SHARPRPC = 0x01;
+	public final static int SERVICE_CALL_TYPE_LOCALRPC = 0x01;
 	public final static int SERVICE_CALL_TYPE_THRIFTRPC = 0x02;
 	
 }

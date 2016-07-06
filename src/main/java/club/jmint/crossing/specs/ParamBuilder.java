@@ -24,10 +24,8 @@ import java.util.Map.Entry;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.ErrorCode;
-import club.jmint.crossing.utils.Security;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -48,7 +46,7 @@ public class ParamBuilder {
 		try{
 			jo = (JsonObject)jp.parse(jsonParams);
 		}catch(JsonSyntaxException e){
-			MyLog.logger.error("Malformed JSON parameters.");
+			CrossLog.logger.error("Malformed JSON parameters.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}
@@ -57,7 +55,7 @@ public class ParamBuilder {
 			return value;
 		}
 		else{
-			MyLog.logger.error("'errorInfo' field not found.");
+			CrossLog.logger.error("'errorInfo' field not found.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 		}
@@ -69,7 +67,7 @@ public class ParamBuilder {
 		try{
 			jo = (JsonObject)jp.parse(jsonParams);
 		}catch(JsonSyntaxException e){
-			MyLog.logger.error("Malformed JSON parameters.");
+			CrossLog.logger.error("Malformed JSON parameters.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}
@@ -78,7 +76,28 @@ public class ParamBuilder {
 			return Integer.parseInt(value);
 		}
 		else{
-			MyLog.logger.error("'errorCode' field not found.");
+			CrossLog.logger.error("'errorCode' field not found.");
+			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
+					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
+		}
+	}
+	
+	public static String getParams(String jsonParams) throws CrossException{
+		JsonParser jp = new JsonParser();
+		JsonObject jo;
+		try{
+			jo = (JsonObject)jp.parse(jsonParams);
+		}catch(JsonSyntaxException e){
+			CrossLog.logger.error("Malformed JSON parameters.");
+			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
+					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
+		}
+		if (jo.has("params")){
+			String value = jo.getAsJsonObject("params").toString();
+			return value;
+		}
+		else{
+			CrossLog.logger.error("'params' field not found.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 		}
@@ -98,7 +117,7 @@ public class ParamBuilder {
 //	}
 
 	public static String buildSignedParams(String p, String signKey) throws CrossException{
-		MyLog.logger.debug("p: " + p + " signKey: " + signKey);
+		CrossLog.logger.debug("p: " + p + " signKey: " + signKey);
 		String md5Value = Security.crossingSign(p, signKey, "");
 		JsonObject jo = new JsonObject();
 		jo.addProperty("sign", md5Value);
@@ -107,12 +126,12 @@ public class ParamBuilder {
 		try{
 			jop = jp.parse(p);
 			if (!jop.isJsonObject()){
-				MyLog.logger.error("Parameter 'p' is malformed.");
+				CrossLog.logger.error("Parameter 'p' is malformed.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 			}
 		}catch(JsonSyntaxException jse){
-			MyLog.logger.error("Parameter 'p' is malformed.");
+			CrossLog.logger.error("Parameter 'p' is malformed.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}
@@ -133,13 +152,13 @@ public class ParamBuilder {
 		try{
 			jop = jp.parse(p);
 			if (!jop.isJsonObject()){
-				MyLog.logger.error("Parameter 'p' is malformed.");
+				CrossLog.logger.error("Parameter 'p' is malformed.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 			}
 		}catch(JsonSyntaxException jse){
 			//jse.printStackTrace();
-			MyLog.logger.error("Parameter 'p' is malformed.");
+			CrossLog.logger.error("Parameter 'p' is malformed.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}		
@@ -151,7 +170,7 @@ public class ParamBuilder {
 			np = jo.getAsJsonObject("params").toString();
 			String signValue = Security.crossingSign(np,signKey,"");
 			if (!sign.equals(signValue)){
-				MyLog.logger.error("Sign not matched.");
+				CrossLog.logger.error("Sign not matched.");
 				throw new CrossException(ErrorCode.COMMON_ERR_SIGN_BAD.getCode(),
 						ErrorCode.COMMON_ERR_SIGN_BAD.getInfo());
 			}
@@ -180,13 +199,13 @@ public class ParamBuilder {
 		try{
 			jop = jp.parse(encryptParams);
 			if (!jop.isJsonObject()){
-				MyLog.logger.error("Parameter 'encryptParams' is malformed.");
+				CrossLog.logger.error("Parameter 'encryptParams' is malformed.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 			}
 		}catch(JsonSyntaxException jse){
 			//jse.printStackTrace();
-			MyLog.logger.error("Parameter 'encryptParams' is malformed.");
+			CrossLog.logger.error("Parameter 'encryptParams' is malformed.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}		
@@ -203,7 +222,7 @@ public class ParamBuilder {
 			try{
 				jor = (JsonObject)jpr.parse(paramsValue);
 			}catch(JsonSyntaxException je){
-				MyLog.logger.error("Decrypted parameters is malformed.");
+				CrossLog.logger.error("Decrypted parameters is malformed.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 			}

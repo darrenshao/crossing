@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.wizard;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -33,16 +33,16 @@ public class Wizard implements IWizard {
 	}
 
 	public void init() {
-		MyLog.logger.info("Initializing " + name + ".");
+		CrossLog.logger.info("Initializing " + name + ".");
 	}
 
 	public void startup() {
-		MyLog.logger.info("Starting " + name + ".");
+		CrossLog.logger.info("Starting " + name + ".");
 		
 	}
 
 	public void shutdown() {
-		MyLog.logger.info("Shutdown " + name + ".");
+		CrossLog.logger.info("Shutdown " + name + ".");
 		
 	}
 

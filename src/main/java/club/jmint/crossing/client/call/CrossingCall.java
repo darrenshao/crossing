@@ -16,15 +16,15 @@
 package club.jmint.crossing.client.call;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
 
-import club.jmint.crossing.client.ClientCallInfo;
 import club.jmint.crossing.client.ClientHandler;
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
-import club.jmint.crossing.protobuf.CrossingReqProto;
-import club.jmint.crossing.protobuf.CrossingRespProto;
+import club.jmint.crossing.client.config.ClientCallInfo;
+import club.jmint.crossing.client.config.ClientConfig;
+import club.jmint.crossing.specs.protobuf.CrossingReqProto;
+import club.jmint.crossing.specs.protobuf.CrossingRespProto;
+import club.jmint.crossing.specs.CrossException;
 import club.jmint.crossing.specs.ParamBuilder;
+import club.jmint.crossing.utils.CrossLog;
 import club.jmint.crossing.utils.Utils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -34,23 +34,16 @@ import io.netty.channel.ChannelFuture;
  *
  */
 public class CrossingCall implements ICall {
-	private HashMap<String, ClientCallInfo> ccimap = null;
-	//private boolean encrypt = false;
+	private ClientConfig config = null;
 	private ChannelFuture cfuture;
 	private ClientHandler handler;
 	private String currentInf;
 	private ClientCallInfo cci;
 	
-	public CrossingCall(ChannelFuture cf, ClientHandler ch){
+	public CrossingCall(ChannelFuture cf, ClientHandler ch, ClientConfig config){
 		this.cfuture = cf;
 		this.handler = ch;
-		init();
-	}
-	
-	public CrossingCall(ChannelFuture cf, ClientHandler ch, HashMap<String, ClientCallInfo> ccim){
-		this.cfuture = cf;
-		this.handler = ch;
-		this.ccimap = ccim;
+		this.config = config;
 		init();
 	}
 	
@@ -60,9 +53,9 @@ public class CrossingCall implements ICall {
 	private String getCciByInf(String inf) {
 		this.currentInf = inf;
 		String[] el = currentInf.split("@");//inf format: xxx@yyy@zzz
-		this.cci = ccimap.get(el[1]);
+		this.cci = config.getClientCallInfo(el[1]);
 		if (cci==null){
-			cci = ccimap.get("DEFAULT");
+			cci = config.getClientCallInfo("DEFAULT");
 		}
 		return el[1];
 	}
@@ -70,7 +63,7 @@ public class CrossingCall implements ICall {
 	private String getSignedParams(String p) throws CrossException{
 		String signed=ParamBuilder.buildSignedParams(p,cci.signKey);
 		
-		MyLog.logger.debug("Signed Params: " + signed);
+		CrossLog.logger.debug("Signed Params: " + signed);
 		
 		return signed;
 	}
@@ -78,13 +71,13 @@ public class CrossingCall implements ICall {
 	private String getEncryptedParams(String signedParams) throws CrossException{
 		String encrypted=ParamBuilder.buildEncryptedParams(signedParams,cci.encryptKey);
 		
-		MyLog.logger.debug("Encrypted Params: " + encrypted);
+		CrossLog.logger.debug("Encrypted Params: " + encrypted);
 
 		return encrypted;
 	}
 	
 	private String checkSignAndRemove(String p) throws CrossException{
-		MyLog.logger.debug("Response signed params: " + p);
+		CrossLog.logger.debug("Response signed params: " + p);
 		String rp = ParamBuilder.checkSignAndRemove(p,cci.signKey);
 		return rp;
 	}
@@ -102,7 +95,7 @@ public class CrossingCall implements ICall {
 		getCciByInf(inf);
 		
 		String signedp = getSignedParams(params);
-		MyLog.logger.info("Invoked call: " + inf);
+		CrossLog.logger.info("Invoked call: " + inf);
 		String response = syncCall(inf, signedp, false);
 		
 		//
@@ -123,7 +116,7 @@ public class CrossingCall implements ICall {
 		
 		String signedp = getSignedParams(params);
 		String encryptedp = getEncryptedParams(signedp);
-		MyLog.logger.info("Invoked call(*): " + inf);
+		CrossLog.logger.info("Invoked call(*): " + inf);
 		String response = syncCall(inf, encryptedp, isEncrypt);
 		
 		//
@@ -153,7 +146,7 @@ public class CrossingCall implements ICall {
 		//sending a call
 		CrossingReqProto.CrossingReq callmsg = builder.build();
 		
-		MyLog.logger.debug("Sending a request:\n" + callmsg);
+		CrossLog.logger.debug("Sending a request:\n" + callmsg);
 		long stime = Utils.getTimeInMillis();
 		
 		channel.writeAndFlush(callmsg);
@@ -167,11 +160,11 @@ public class CrossingCall implements ICall {
 				res=handler.getRespMsg(msgKey);
 			} while (res==null);
 		} catch (InterruptedException e) {
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 		}
 		long etime = Utils.getTimeInMillis();
 		long delay = etime - stime;
-		MyLog.logger.debug(String.format("Received a response(in %dms):\n",delay) + res);
+		CrossLog.logger.debug(String.format("Received a response(in %dms):\n",delay) + res);
 		
 		//output the calling result
 		//String rs = res.getServiceName();

@@ -1,5 +1,5 @@
 package protobuf;
-option java_package="club.jmint.crossing.protobuf";
+option java_package="club.jmint.crossing.specs.protobuf";
 option java_outer_classname="CrossingRespProto";
 
 message CrossingResp{

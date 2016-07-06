@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -41,7 +41,7 @@ public class ClientCallStats extends CallStats implements Iterator<Object> {
 	private CounterPair addCounterPair(String item, int counter){
 		CounterPair	cp = new CounterPair(item,counter);
 		infs.put(item, cp);
-		MyLog.logger.info("CounterPair: item="+item+" created.");
+		CrossLog.logger.info("CounterPair: item="+item+" created.");
 		return cp;
 	}
 
@@ -56,7 +56,7 @@ public class ClientCallStats extends CallStats implements Iterator<Object> {
 	public void setCounterPair(String item, int counter){
 		CounterPair cp = infs.get(item);
 		if (cp==null){ 
-			MyLog.logger.warn("CounterPair: item="+item+" not found.");
+			CrossLog.logger.warn("CounterPair: item="+item+" not found.");
 			addCounterPair(item, 0);
 			return ;
 		}
@@ -66,7 +66,7 @@ public class ClientCallStats extends CallStats implements Iterator<Object> {
 	public void incCounterPair(String item){
 		CounterPair cp = infs.get(item);
 		if (cp==null){ 
-			MyLog.logger.warn("CounterPair: item="+item+" not found.");
+			CrossLog.logger.warn("CounterPair: item="+item+" not found.");
 			addCounterPair(item, 0);
 			return ;
 		}

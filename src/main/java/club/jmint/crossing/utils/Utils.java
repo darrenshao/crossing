@@ -19,14 +19,17 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
  * @author shc
  *
  */
 public class Utils {
-	private static int seq = 0x00000000;
+	private static final Random r = new Random();
+	private static int seq = r.nextInt();
 
 	public static String getIpStrFromSeqId(long seqId){
 		String hex = Long.toHexString(seqId);
@@ -129,5 +132,53 @@ public class Utils {
 		return Calendar.getInstance().getTime().toString();
 	}
 	
-
+	/**
+	 * Copy given length of bytes from a byte array to another byte array
+	 * @param from
+	 * @param to
+	 * @param len
+	 * @return len
+	 */
+	public static byte[] copyBytes(byte[] from, int offset, int len){
+		byte[] to = new byte[len];
+		
+		for (int i=0; i<len; i++){
+			to[i] = from[offset+i];
+		}
+		return to;
+	}
+	
+	/**
+	 * Print bytes in Hex format.
+	 * @param bytes
+	 */
+	public static void printHex(byte[] bytes){
+		if (bytes==null) return;
+		int lines = bytes.length / 16;
+		if (bytes.length % 16 > 0){
+			lines++;
+		}
+		String readable = new String(bytes);
+		int maxlen = readable.length();
+		
+		for(int i=1;i<=lines;i++){
+			
+			for(int j=0;j<16;j++){
+				int dot1 = j + (i-1)*16;
+				if (dot1 < maxlen){
+					System.out.print(String.format("%2X ", bytes[dot1]));
+				}
+			}
+			System.out.print("    ");
+			
+			for(int k=0;k<16;k++){
+				int dot2 = k + (i-1)*16;
+				if (dot2 < maxlen){
+					System.out.print(String.format("%2c ", readable.charAt(dot2)));
+				}
+			}
+			
+			System.out.println();
+		}
+	}
 }

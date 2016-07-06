@@ -22,8 +22,8 @@ import java.util.Iterator;
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.config.CrossingConfig;
 import club.jmint.crossing.config.ProviderPair;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.Constants;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -50,10 +50,10 @@ public class ProviderLoader {
 					params[0] = Boolean.valueOf(pp.isEnabled());
 					params[1] = pp.getClazz();
 					providerWizard.add(pp.getName(), (Provider)co.newInstance(params));
-					MyLog.logger.info(pp.getName()+"("+pp.getClazz()+ ") loaded.");
+					CrossLog.logger.info(pp.getName()+"("+pp.getClazz()+ ") loaded.");
 					//System.out.println(providerWizard.getProvider(name));
 				} catch (Exception e) {
-					MyLog.printStackTrace(e);
+					CrossLog.printStackTrace(e);
 				} 
 				
 			}

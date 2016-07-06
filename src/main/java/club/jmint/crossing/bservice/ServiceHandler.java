@@ -20,10 +20,10 @@ import club.jmint.crossing.bservice.provider.ProviderWizard;
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.config.CrossingConfig;
 import club.jmint.crossing.config.ProviderPair;
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.Constants;
+import club.jmint.crossing.specs.CrossException;
 import club.jmint.crossing.specs.ReqMsg;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -50,7 +50,7 @@ public class ServiceHandler implements IHandler{
 		String ret = null;
 		Provider pro = ProviderWizard.getProvider(provider.getName());
 		ret = pro.execute(servername, classname, infname, rmsg.params, rmsg.isEncrypt);
-		MyLog.logger.info("Call executed: " + servername + " ==> " + classname + " ==> " + infname);
+		CrossLog.logger.info("Call executed: " + servername + " ==> " + classname + " ==> " + infname);
 		
 		return ret;
 	}

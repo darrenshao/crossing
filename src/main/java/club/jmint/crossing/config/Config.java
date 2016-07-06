@@ -17,7 +17,7 @@ package club.jmint.crossing.config;
 
 import org.apache.commons.configuration.*;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -42,7 +42,7 @@ public class Config implements IConfig{
 			//System.out.println(config);
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 		}
 		
 		return config;
@@ -54,14 +54,14 @@ public class Config implements IConfig{
 			//String fileName = Constants.DIR_CONF+File.separator+file;
 			config = new XMLConfiguration(file);
 		} catch (ConfigurationException e){
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 		}
 		
 		return config;
 	}
 
 	public Config loadConfig() {
-		MyLog.logger.debug("loading " + name);
+		CrossLog.logger.debug("loading " + name);
 		return null;
 	}
 

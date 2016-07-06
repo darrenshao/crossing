@@ -15,8 +15,9 @@
  */
 package club.jmint.crossing.config;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.client.config.ClientConfig;
 import club.jmint.crossing.runtime.Constants;
+import club.jmint.crossing.utils.CrossLog;
 import club.jmint.crossing.wizard.Wizard;
 
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class ConfigWizard extends Wizard {
 		try {
 			config = new PropertiesConfiguration(file);
 		} catch (ConfigurationException e) {
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 		}
 		
 		return config;
@@ -57,7 +58,7 @@ public class ConfigWizard extends Wizard {
 		try {
 			config = new XMLConfiguration(file);
 		} catch (ConfigurationException e){
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 		}
 		
 		return config;
@@ -85,7 +86,6 @@ public class ConfigWizard extends Wizard {
 		confMap.put(Constants.CONFIG_SERVER, new ServerConfig("conf/server.properties"));
 		confMap.put(Constants.CONFIG_ACL, new AclConfig("conf/acl.xml"));
 		confMap.put(Constants.CONFIG_CROSSING, new CrossingConfig("conf/crossing.xml"));
-		confMap.put((Constants.CONFIG_CLIENTCALL), new ClientCallConfig("conf/crossing_clientcall.xml"));
 		loadConfig();
 	}
 

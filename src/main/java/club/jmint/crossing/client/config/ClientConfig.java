@@ -1,4 +1,4 @@
-package club.jmint.crossing.config;
+package club.jmint.crossing.client.config;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,30 +8,43 @@ import java.util.Map.Entry;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.ConfigurationNode;
 
-import club.jmint.crossing.client.ClientCallInfo;
-import club.jmint.crossing.client.CrossingServerInfo;
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.config.Config;
+import club.jmint.crossing.utils.CrossLog;
 
-public class ClientCallConfig extends Config {
+public class ClientConfig extends Config {
 	private HashMap<String, ClientCallInfo> cciMap = new HashMap<String, ClientCallInfo>();
-	private HashMap<String ,CrossingServerInfo> csiMap = new HashMap<String, CrossingServerInfo>();
+	private HashMap<String ,CrossingServer> csiMap = new HashMap<String, CrossingServer>();
 
-	public ClientCallConfig(String filePath) {
-		super("ClientCallConfig", filePath);
+	public ClientConfig(String filePath) {
+		super("ClientConfig", filePath);
 		init();
 	}
+	
+	public ClientCallInfo getClientCallInfo(String service) {
+		ClientCallInfo cci = cciMap.get(service);
+		if (cci == null) {
+			cci = cciMap.get("DEFAULT");
+			if (cci == null) {
+				cciMap.put("DEFAULT", new ClientCallInfo("", "DEFAULT", "", "MD5", "miftyExampleKey", "DES",
+						"miftyExampleKey", "miftyExampleKey"));
+				return cciMap.get("DEFAULT");
+			}
+			return cci;
+		}
+		return cci;
+	}
 
-	public HashMap<String, ClientCallInfo> getClientCallInfoMap(){
-		return cciMap;
+	public CrossingServer getCrossingServer() {
+		CrossingServer cs = csiMap.get("DEFAULT");
+		if (cs == null) {
+			CrossLog.logger.error("Crossing server not configured.");
+		}
+		return cs;
 	}
 	
 	private void init(){
-		if (cciMap==null){
-			cciMap = new HashMap<String, ClientCallInfo>();
-		}
-		if (csiMap==null){
-			csiMap = new HashMap<String, CrossingServerInfo>();
-		}
+		loadConfig();
+		print();
 	}
 
 	@Override
@@ -52,7 +65,7 @@ public class ClientCallConfig extends Config {
 			port = cnode.getAttributes("port");
 			ssl = cnode.getAttributes("sslEnabled");			
 			
-			csiMap.put(name.get(0).getValue().toString(), new CrossingServerInfo(
+			csiMap.put(name.get(0).getValue().toString(), new CrossingServer(
 					name.get(0).getValue().toString(),
 					ip.get(0).getValue().toString(),
 					port.get(0).getValue().toString(),
@@ -102,11 +115,12 @@ public class ClientCallConfig extends Config {
 		sb.append(name+":\n");
 		
 		sb.append("Crossing Server:\n");
-		Iterator<Entry<String,CrossingServerInfo>> it = csiMap.entrySet().iterator();
-		Entry<String,CrossingServerInfo> en;
+		Iterator<Entry<String,CrossingServer>> it = csiMap.entrySet().iterator();
+		Entry<String,CrossingServer> en;
 		while(it.hasNext()){
 			en = it.next();
-			sb.append(String.format("%-20s= (%s,%s,%s)\n", en.getKey(), en.getValue().ip,en.getValue().port,en.getValue().ssl_enabled));
+			sb.append(String.format("%-20s= (%s,%s,%s)\n", en.getKey(), en.getValue().ip,
+					en.getValue().port,en.getValue().ssl_enabled));
 		}
 		
 		
@@ -118,7 +132,7 @@ public class ClientCallConfig extends Config {
 			sb.append(String.format("%-20s= %s\n", en2.getKey(), en2.getValue()));
 		}
 	
-		MyLog.logger.info(sb.toString());
+		CrossLog.logger.info(sb.toString());
 	}
 	
 	

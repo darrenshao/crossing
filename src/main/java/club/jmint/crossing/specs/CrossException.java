@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.exception;
+package club.jmint.crossing.specs;
 
 /**
  * @author shc
@@ -23,9 +23,6 @@ public class CrossException extends Exception {
 	private int errorCode;
 	private String errorInfo;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3492482886485598737L;
 
 	public CrossException(String message) {
@@ -49,7 +46,7 @@ public class CrossException extends Exception {
 	}	
 	
 	public CrossException(int errorCode, String errorInfo){
-		super(errorInfo);
+		//super(errorInfo);
 		this.errorCode = errorCode;
 		this.errorInfo = errorInfo;
 	}
@@ -63,6 +60,6 @@ public class CrossException extends Exception {
 	}
 	
 	public String toString(){
-		return getMessage();
+		return getMessage()+"[errorCode=" + errorCode + ",errorInfo="+ errorInfo + "]";
 	}
 }

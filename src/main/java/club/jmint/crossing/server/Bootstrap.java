@@ -13,9 +13,8 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.startup;
+package club.jmint.crossing.server;
 
-import club.jmint.crossing.server.CrossingServer;
 import club.jmint.crossing.wizard.WizardManager;
 
 /**

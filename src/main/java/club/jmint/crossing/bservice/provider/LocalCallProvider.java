@@ -18,9 +18,9 @@ package club.jmint.crossing.bservice.provider;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.ErrorCode;
+import club.jmint.crossing.specs.CrossException;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -86,9 +86,9 @@ public class LocalCallProvider extends Provider {
 			mm = cl.getDeclaredMethod(am[si].getName(), am[si].getParameterTypes());
 			jsonResult = mm.invoke(execObj, jsonParams, encrypt);
 
-			MyLog.logger.info("Invoked LocalCall call: " + server + " ==> " + clazz + " ==> " + inf);
+			CrossLog.logger.info("Invoked LocalCall call: " + server + " ==> " + clazz + " ==> " + inf);
 		}catch(Exception e){
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 			throw new CrossException(ErrorCode.CROSSING_ERR_INTERNAL.getCode(),
 					ErrorCode.CROSSING_ERR_INTERNAL.getInfo());
 		}

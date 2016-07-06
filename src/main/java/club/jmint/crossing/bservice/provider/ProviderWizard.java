@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.specs.CrossException;
+import club.jmint.crossing.utils.CrossLog;
 import club.jmint.crossing.wizard.Wizard;
 
 /**
@@ -57,7 +57,7 @@ public class ProviderWizard extends Wizard {
 			providers = new HashMap<String, Provider>();
 		}
 		
-		MyLog.logger.info("Starting load service providers.");
+		CrossLog.logger.info("Starting load service providers.");
 		ProviderLoader.load(this);
 	
 		initProvider();
@@ -72,9 +72,9 @@ public class ProviderWizard extends Wizard {
 			try {
 				p = en.getValue();
 				p.init();
-				MyLog.logger.info(p.getName() + " init.");
+				CrossLog.logger.info(p.getName() + " init.");
 			} catch (CrossException e) {
-				MyLog.printStackTrace(e);
+				CrossLog.printStackTrace(e);
 			}
 		}
 	}

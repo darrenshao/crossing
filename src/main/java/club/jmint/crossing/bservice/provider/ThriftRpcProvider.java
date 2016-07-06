@@ -29,10 +29,10 @@ import org.apache.thrift.transport.TTransportException;
 import club.jmint.crossing.config.ConfigWizard;
 import club.jmint.crossing.config.CrossingConfig;
 import club.jmint.crossing.config.ServerPair;
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.Constants;
 import club.jmint.crossing.runtime.ErrorCode;
+import club.jmint.crossing.specs.CrossException;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -80,15 +80,16 @@ public class ThriftRpcProvider extends Provider {
 			//establish connection to Thrift server
 			try {
 				tc.transport.open();
+				//tc.isConnected = true;
 			} catch (TTransportException e) {
-				MyLog.printStackTrace(e);
-				MyLog.logger.error(getName() + ": Failed to create transport to server " 
+				CrossLog.printStackTrace(e);
+				CrossLog.logger.error(getName() + ": Failed to create transport to server " 
 						+ sp.getName() + " by "+ sp.getIplist() + ":" + sp.getPort());
 				//if failed, drop it to the list for reopen.
-				tc.isConnected = false;
+				//tc.isConnected = false;
 				continue;
 			}
-			MyLog.logger.info(getName() + ": Succeeded to create transport to server " 
+			CrossLog.logger.info(getName() + ": Succeeded to create transport to server " 
 						+ sp.getName() + " by "+ sp.getIplist() + ":" + sp.getPort());	
 		}
 	}
@@ -132,9 +133,9 @@ public class ThriftRpcProvider extends Provider {
 			mm = cl.getDeclaredMethod(am[si].getName(), am[si].getParameterTypes());
 			jsonResult = mm.invoke(execObj, inf, jsonParams, encrypt);
 
-			MyLog.logger.info("Invoked ThriftRpc call: " + server + " ==> " + clazz + " ==> " + inf);
+			CrossLog.logger.info("Invoked ThriftRpc call: " + server + " ==> " + clazz + " ==> " + inf);
 		}catch(Exception e){
-			MyLog.printStackTrace(e);
+			CrossLog.printStackTrace(e);
 			throw new CrossException(ErrorCode.CROSSING_ERR_INTERNAL.getCode(),
 					ErrorCode.CROSSING_ERR_INTERNAL.getInfo());
 		}

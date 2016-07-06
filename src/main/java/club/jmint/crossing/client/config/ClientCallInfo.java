@@ -1,4 +1,4 @@
-package club.jmint.crossing.client;
+package club.jmint.crossing.client.config;
 
 /**
  * Contains interface info including: server name/interface class name/method name/

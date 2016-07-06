@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.client.call;
 
-import club.jmint.crossing.exception.CrossException;
+import club.jmint.crossing.specs.CrossException;
 
 /**
  * @author shc
@@ -35,7 +35,6 @@ public interface ICall {
 	 * 					encrypted value = Encrypt( {"params":{"key1":"value1","key2":"value2"},"sign":"signValue"} ) <br/>
 	 * 					{"encrypted":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"} <br/>
 	 * 
-	 * @param isSessionCheck Verify session
 	 * @return String JSON string with signature or encryption information <br/>
 	 * 			Example: <br/>
 	 * 				Encrypted: {"encrypted":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","errorCode":"0","erroDesc":"success"} <br/>

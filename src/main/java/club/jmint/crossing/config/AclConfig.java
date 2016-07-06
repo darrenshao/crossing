@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.ConfigurationNode;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -224,6 +224,6 @@ public class AclConfig extends Config {
 				sb.append(ifs.get(i)+"\n");
 			}
 		}	
-		MyLog.logger.info(sb.toString());
+		CrossLog.logger.info(sb.toString());
 	}
 }

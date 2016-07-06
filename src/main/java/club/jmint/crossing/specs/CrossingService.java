@@ -19,10 +19,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import club.jmint.crossing.exception.CrossException;
-import club.jmint.crossing.log.MyLog;
 import club.jmint.crossing.runtime.ErrorCode;
-import club.jmint.crossing.utils.Security;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -108,7 +106,7 @@ public class CrossingService {
 	}
 
 	protected String buildSign(String source, String signKey){
-		 MyLog.logger.debug("source: " + source + " signKey: " + signKey);
+		 CrossLog.logger.debug("source: " + source + " signKey: " + signKey);
 		 return Security.crossingSign(source, signKey, "MD5");
 	}
 	
@@ -127,7 +125,7 @@ public class CrossingService {
 		try{
 			jo = (JsonObject)jp.parse(params);
 		}catch(JsonSyntaxException e){
-			MyLog.logger.error("Malformed parameters.");
+			CrossLog.logger.error("Malformed parameters.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}
@@ -135,21 +133,21 @@ public class CrossingService {
 		String encrypted,jsonParams;
 		if (encrypt){
 			if (!jo.has("encrypted")){
-				MyLog.logger.error("Missing parameter: encrypted.");
+				CrossLog.logger.error("Missing parameter: encrypted.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 			}
 			encrypted = jo.getAsJsonPrimitive("encrypted").getAsString();
 			jsonParams = buildDecrypt(encrypted);
 			if (jsonParams==null){
-				MyLog.logger.error("Decrypt parameters failed.");
+				CrossLog.logger.error("Decrypt parameters failed.");
 				throw new CrossException(ErrorCode.COMMON_ERR_DECRYPTION.getCode(),
 						ErrorCode.COMMON_ERR_DECRYPTION.getInfo());
 			}
 			try{
 				jode = (JsonObject)jp.parse(jsonParams);
 			}catch(JsonSyntaxException e){
-				MyLog.logger.error("Malformed parameters.");
+				CrossLog.logger.error("Malformed parameters.");
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 			}
@@ -159,13 +157,13 @@ public class CrossingService {
 		
 		//Check signature
 		if (!jo.has("sign")){
-			MyLog.logger.error("Missing parameter: sign.");
+			CrossLog.logger.error("Missing parameter: sign.");
 			throw new CrossException(ErrorCode.COMMON_ERR_SIGN_MISSING.getCode(),
 					ErrorCode.COMMON_ERR_SIGN_MISSING.getInfo());
 		}
 		String signValue = jo.getAsJsonPrimitive("sign").getAsString();
 		if (!jo.has("params")){
-			MyLog.logger.error("Missing parameter: params.");
+			CrossLog.logger.error("Missing parameter: params.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 		}
@@ -173,7 +171,7 @@ public class CrossingService {
 		
 		String signCheck = buildSign(inputparams, signKey);
 		if (!signCheck.equals(signValue)){
-			MyLog.logger.error("Signature not matched[SRC sign: "+signValue+", DST sign: "+signCheck+"].");
+			CrossLog.logger.error("Signature not matched[SRC sign: "+signValue+", DST sign: "+signCheck+"].");
 			throw new CrossException(ErrorCode.COMMON_ERR_SIGN_BAD.getCode(),
 					ErrorCode.COMMON_ERR_SIGN_BAD.getInfo());
 		}
@@ -181,7 +179,7 @@ public class CrossingService {
 		try{
 			joparams = (JsonObject)jp.parse(inputparams);
 		}catch(JsonSyntaxException e){
-			MyLog.logger.error("Malformed parameters.");
+			CrossLog.logger.error("Malformed parameters.");
 			throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MALFORMED.getCode(),
 					ErrorCode.COMMON_ERR_PARAM_MALFORMED.getInfo());
 		}
@@ -298,7 +296,7 @@ public class CrossingService {
 	protected String getParamAsString(JsonObject params, String key) throws CrossException{
 		if (params!=null){
 			if (!params.has(key)){
-				MyLog.logger.error("Missing parameter: "+key);
+				CrossLog.logger.error("Missing parameter: "+key);
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 			}
@@ -310,7 +308,7 @@ public class CrossingService {
 	protected int getParamAsInt(JsonObject params, String key) throws CrossException{
 		if (params!=null){
 			if (!params.has(key)){
-				MyLog.logger.error("Missing parameter: "+key);
+				CrossLog.logger.error("Missing parameter: "+key);
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 			}
@@ -322,7 +320,7 @@ public class CrossingService {
 	protected boolean getParamAsBoolean(JsonObject params, String key) throws CrossException{
 		if (params!=null){
 			if (!params.has(key)){
-				MyLog.logger.error("Missing parameter: "+key);
+				CrossLog.logger.error("Missing parameter: "+key);
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 			}
@@ -334,7 +332,7 @@ public class CrossingService {
 	protected long getParamAsLong(JsonObject params, String key) throws CrossException{
 		if (params!=null){
 			if (!params.has(key)){
-				MyLog.logger.error("Missing parameter: "+key);
+				CrossLog.logger.error("Missing parameter: "+key);
 				throw new CrossException(ErrorCode.COMMON_ERR_PARAM_MISSING.getCode(),
 						ErrorCode.COMMON_ERR_PARAM_MISSING.getInfo());
 			}

@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.stats;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 import club.jmint.crossing.utils.Utils;
 
 /**
@@ -43,9 +43,9 @@ public class StatSnapshotThread extends Thread{
 			try {
 				sleep(timegap);
 				ss = StatsWizard.createStatsSnapshot();
-				MyLog.logger.info("Statistics snapshot("+Utils.getDateTime()+"): \n" + ss);
+				CrossLog.logger.info("Statistics snapshot("+Utils.getDateTime()+"): \n" + ss);
 			} catch (InterruptedException e) {
-				MyLog.printStackTrace(e);
+				CrossLog.printStackTrace(e);
 			}
 			
 		}

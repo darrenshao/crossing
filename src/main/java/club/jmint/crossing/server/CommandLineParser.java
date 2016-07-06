@@ -13,31 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.startup;
+package club.jmint.crossing.server;
 
 /**
  * @author shc
  *
  */
-public class CommandLine {
-	private String[] commandline;
-	private CommandLineParser parser;
+public class CommandLineParser {
 
-	public CommandLine(String[] line){
-		this.commandline = line;
-		this.parser = new CommandLineParser();
-	}
-	
-	public void printHelp(){
-		StringBuilder help = new StringBuilder();
-		help.append("Usage: \n");
-		help.append("    -h Print this help message.\n");
-		help.append("    -b binding address.\n");
-		help.append("    -p listening port.\n");
-		System.out.print(help.toString());
-	}
-	
-	public void parse(){
-		//
-	}
 }

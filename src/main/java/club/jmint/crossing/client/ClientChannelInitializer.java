@@ -15,7 +15,7 @@
  */
 package club.jmint.crossing.client;
 
-import club.jmint.crossing.protobuf.CrossingRespProto;
+import club.jmint.crossing.specs.protobuf.CrossingRespProto;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

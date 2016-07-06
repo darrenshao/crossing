@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -68,7 +68,7 @@ public class ServerConfig extends Config {
 			en = it.next();
 			sb.append(String.format("%-30s= %s\n", en.getKey(), en.getValue()));
 		}
-		MyLog.logger.info(sb.toString());
+		CrossLog.logger.info(sb.toString());
 	}
 
 }

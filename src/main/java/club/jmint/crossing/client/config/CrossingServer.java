@@ -1,6 +1,6 @@
-package club.jmint.crossing.client;
+package club.jmint.crossing.client.config;
 
-public class CrossingServerInfo {
+public class CrossingServer {
 	public String name;
 	public String ip;
 	public String port;
@@ -8,7 +8,7 @@ public class CrossingServerInfo {
 	
 	
 	
-	public CrossingServerInfo(String name, String ip, String port, boolean ssl_enabled) {
+	public CrossingServer(String name, String ip, String port, boolean ssl_enabled) {
 		super();
 		this.name = name;
 		this.ip = ip;

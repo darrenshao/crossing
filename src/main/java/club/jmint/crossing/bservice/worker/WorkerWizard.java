@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 import club.jmint.crossing.wizard.Wizard;
 
 public class WorkerWizard extends Wizard {
@@ -53,7 +53,7 @@ public class WorkerWizard extends Wizard {
 			en = it.next();
 			t = en.getValue();
 			t.start();
-			MyLog.logger.info(en.getKey() + "("+ t.getId() +") has started.");
+			CrossLog.logger.info(en.getKey() + "("+ t.getId() +") has started.");
 		}
 		
 	}

@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.ConfigurationNode;
 
-import club.jmint.crossing.log.MyLog;
+import club.jmint.crossing.utils.CrossLog;
 
 /**
  * @author shc
@@ -207,6 +207,6 @@ public class CrossingConfig extends Config {
 				sb.append(String.format("%-40s %-10s\n",ifs.get(i).getInfName(),ifs.get(i).getIsEncrypt()));
 			}
 		}	
-		MyLog.logger.info(sb.toString());
+		CrossLog.logger.info(sb.toString());
 	}
 }

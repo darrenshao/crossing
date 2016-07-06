@@ -13,19 +13,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package club.jmint.crossing.bservice.provider;
+package club.jmint.crossing.client;
 
-import club.jmint.crossing.specs.CrossException;
+import com.google.gson.JsonObject;
 
-/**
- * @author shc
- * 
- */
-public interface IProvider {
-	
-	public void init() throws CrossException;
-	public String execute(String server, String clazz, String inf, String jsonParams, boolean encrypt) throws CrossException;
-	public String getName();
-	public String getClazz();
-	public boolean isEnabled();
+public class CallResult {
+	public boolean isSuccess;
+	public int errorCode;
+	public String errorInfo;
+	public JsonObject data;
 }
